@@ -181,7 +181,7 @@ Agent: The booking system has cancelled it. Your cancellation reference is
 
 Voice-specific rules: read back the reference and dates; never ask for a full card number; allow barge-in; do not disclose booking details while identity is unverified; offer a secure link when the caller cannot receive a code.
 
-### Voice — booking not found
+### Voice — booking not located
 
 Ask for the reference or the email address used. Read the reference back character by character. After two attempts, transfer to bookings support. Do not guess a property or date from the caller’s description.
 
