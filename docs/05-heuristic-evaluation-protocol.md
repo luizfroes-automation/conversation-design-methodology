@@ -1,14 +1,13 @@
-# P6-ENH-01 — Documentary Heuristic Evaluation: Methodology Protocol
+# Documentary Heuristic Evaluation Protocol
 
 **Status:** Draft for methodological review. The full evaluation has not started.
-**Ticket:** P6-ENH-01 — Methodology Discovery.
 **Baseline:** `conversation-design-methodology` at `afa3c601060185b2f8a758e042a1b8efa55c496d` (squash of PR #1).
-**P1 reference:** `handover-intelligence-portfolio` at `cf738f258efd96b3a5c825310da4561dc1c79e39`.
+**Reference contract:** `handover-intelligence-portfolio` at `cf738f258efd96b3a5c825310da4561dc1c79e39`.
 **Scope:** define and pilot the method only. This document does not evaluate the whole journey and does not test users.
 
 ## 1. Purpose
 
-This protocol defines a structured, traceable and reproducible way to review the **documented** P6 cancellation journey for chat, voice and email. It is a heuristic evaluation of design documents, not a usability test and not a conformance audit.
+This protocol defines a structured, traceable and reproducible way to review the **documented** cancellation journey for chat, voice and email. It is a heuristic evaluation of design documents, not a usability test and not a conformance audit.
 
 The method must:
 
@@ -22,7 +21,7 @@ The method must:
 
 ### 2.1 Object of evaluation
 
-The baseline is the P6 Core at commit `afa3c60`. The documents are the only evidence; there is no running chat, voice or email implementation in this repository.
+The baseline is the conversation-design Core at commit `afa3c60`. The documents are the only evidence; there is no running chat, voice or email implementation in this repository.
 
 | Document | Role in the evaluation | SHA-256 at `afa3c60` |
 |---|---|---|
@@ -66,7 +65,7 @@ One unit is a **channel × journey state × documentary passage**. A finding des
 ### 3.3 Two passes
 
 1. **Discovery pass:** read the baseline and record observations without assigning criteria or severity. Quote or paraphrase the passage.
-2. **Classification pass:** map each observation to criteria, separate observation from hypothetical consequence, assign severity and confidence, and write a recommendation.
+2. **Classification pass:** map each observation to criteria, separate observation from hypothetical consequence, assign severity and both confidence judgements, and write a recommendation.
 
 This separation reduces the risk of fitting the observation to the first criterion that comes to mind.
 
@@ -130,20 +129,20 @@ Source: W3C, *Web Content Accessibility Guidelines (WCAG) 2.2*, W3C Recommendati
 
 Source for a future implemented chat UI: W3C, *WAI-ARIA 1.2*, W3C Recommendation, 6 June 2023. It is informative here and not evaluable without an interface.
 
-| Code | Accessibility concern | Relevant WCAG 2.2 reference | Status |
-|---|---|---|---|
-| `A1` | Names, labels and instructions | 1.1.1, 2.4.6, 3.3.2 | Partially evaluable in text |
-| `A2` | Error identification and suggestion | 3.3.1, 3.3.3 | Evaluable in text |
-| `A3` | Error prevention and redundant entry | 3.3.4, 3.3.6, 3.3.7 | Evaluable in text |
-| `A4` | Time limits and re-authentication | 2.2.1, 2.2.5, 2.2.6 | Partially evaluable; secure-link timing is described, implementation is not |
-| `A5` | Status messages | 4.1.3 | Partially evaluable; visual/ARIA behaviour is not |
-| `A6` | Keyboard, focus, contrast, target size | 2.1.1, 2.4.7, 1.4.3, 2.5.8 | Not evaluable without an interface |
+| Code | Accessibility concern | Relevant WCAG 2.2 reference | Documentary | Runtime |
+|---|---|---|---|---|
+| `A1` | Names, labels and instructions | 1.1.1, 2.4.6, 3.3.2 | P — wording exists; semantic names do not | N — no interface |
+| `A2` | Error identification and suggestion | 3.3.1, 3.3.3 | E — messages can be read | N — no rendered error state |
+| `A3` | Error prevention and redundant entry | 3.3.4, 3.3.6, 3.3.7 | E — safeguards described | N — no interface |
+| `A4` | Time limits and re-authentication | 2.2.1, 2.2.5, 2.2.6 | P — link timing described; session implementation absent | N — no runtime |
+| `A5` | Status messages | 4.1.3 | P — state messages described | N — no ARIA/live-region behaviour |
+| `A6` | Keyboard, focus, contrast, target size | 2.1.1, 2.4.7, 1.4.3, 2.5.8 | N — no visual interface | N — no interface; NA for voice-only surfaces |
 
-Voice accessibility for deaf, hard-of-hearing, speech-impaired or cognitively impaired callers cannot be established from this baseline. That is a declared gap, not a pass.
+Voice accessibility for deaf, hard-of-hearing, speech-impaired or cognitively impaired callers cannot be established from this baseline. That is a declared gap, not a pass. Visual-only criteria are `NA` for the voice channel, not evidence of compliance.
 
 ### 4.5 Project-specific criteria
 
-These are **own adaptations**, not standards. They exist because the P6 journey has states that generic heuristics do not name.
+These are **own adaptations**, not standards. They exist because the journey has states that generic heuristics do not name.
 
 | Code | Criterion | Why it exists |
 |---|---|---|
@@ -158,30 +157,32 @@ These are **own adaptations**, not standards. They exist because the P6 journey 
 
 ### 5.1 Status codes
 
-- **E — evaluable:** the document contains enough evidence to assess the criterion.
-- **P — partially evaluable:** the document states the intended behaviour, but the actual implementation, timing or sensory experience is absent.
-- **N — not evaluable:** the criterion requires an interface, runtime, audio, data or user observation that the baseline does not contain.
+Each status is applied twice: once to the **documentary description** and once to the **runtime/experience**. A documentary `E` never implies a runtime `E`.
+
+- **E — evaluable:** the evidence needed for that dimension is present.
+- **P — partially evaluable:** some evidence is present, but a material part is missing.
+- **N — not evaluable:** the dimension requires an interface, runtime, audio, data or user observation that the baseline does not contain.
 - **NA — not applicable:** the criterion does not apply to that stage or channel.
 
 `N` and `NA` are coverage findings; they are not violations.
 
-### 5.2 Channel × state coverage
+### 5.2 Documentary and runtime coverage by state
 
-Cells list the primary criteria and the strongest status. The full list of criteria is in section 4.
+Cells use `Doc` for the document and `Run` for a running implementation. Criteria are the primary set from section 4.
 
 | Journey state | Chat | Voice | Email |
 |---|---|---|---|
-| Identification | E (`N1,N2,N5,I1,I2,X1`) | P (`V1,V2,I2,X1`); identity provider not runnable | E (`N1,N2,N5,I2,X1`); session described |
-| Clarification | E (`N3,N9,I5,I6,X3`) | P (`V1,V3,I5,I6,X3`); ASR repair not runnable | E (`N3,N9,I5,I6,X3`) |
-| Consent | E (`N5,I5,X2`) | P (`V1,V2,I5,X2`); voice confirmation scripted only | E (`N5,I5,X2`); secure session described |
-| Execution | E (`N1,N4,X1,X6`); booking API not runnable | P (`N1,N4,V3,X1,X6`); booking API and audio not runnable | E (`N1,N4,X1,X6`); booking API not runnable |
-| Unknown result | E (`N1,N9,I6,X1,X6`) | P (`V3,I6,X1,X6`); audible recovery not runnable | E (`N1,N9,I6,X1,X6`) |
-| Notification | E (`N1,N9,X1`); delivery not runnable | P (`V3,X1`); delivery and audio not runnable | E (`N1,N9,X1`); delivery not runnable |
-| Human transfer | E (`N3,N6,N10,I5,X4`); routing UI not present | P (`V3,I5,X4`); transfer experience not runnable | E (`N3,N6,N10,I5,X4`); routing UI not present |
+| Identification | `Doc E (N1,N2,N5,I1,I2,X1)`; `Run N (identity provider)` | `Doc P (V1,V2,I2,X1)`; `Run N (ASR, identity provider)` | `Doc E (N1,N2,N5,I2,X1)`; `Run N (secure session, email identity)` |
+| Clarification | `Doc E (N3,N9,I5,I6,X3)`; `Run N (dialogue engine)` | `Doc P (V1,V3,I5,I6,X3)`; `Run N (ASR repair)` | `Doc E (N3,N9,I5,I6,X3)`; `Run N (thread automation)` |
+| Consent | `Doc E (N5,I5,X2)`; `Run N (session binding)` | `Doc P (V1,V2,I5,X2)`; `Run N (voice session, audio)` | `Doc E (N5,I5,X2)`; `Run N (secure session)` |
+| Execution | `Doc E (N1,N4,X1,X6)`; `Run N (booking API)` | `Doc P (N1,N4,V3,X1,X6)`; `Run N (booking API, audio)` | `Doc E (N1,N4,X1,X6)`; `Run N (booking API)` |
+| Unknown result | `Doc E (N1,N9,I6,X1,X6)`; `Run N (booking API, reconciliation)` | `Doc P (V3,I6,X1,X6)`; `Run N (booking API, audio)` | `Doc E (N1,N9,I6,X1,X6)`; `Run N (booking API, reconciliation)` |
+| Notification | `Doc E (N1,N9,X1)`; `Run N (delivery provider)` | `Doc P (V3,X1)`; `Run N (delivery, audio)` | `Doc E (N1,N9,X1)`; `Run N (delivery provider)` |
+| Human transfer | `Doc E (N3,N6,N10,I5,X4)`; `Run N (routing, agent desktop)` | `Doc P (V3,I5,X4)`; `Run N (transfer, audio)` | `Doc E (N3,N6,N10,I5,X4)`; `Run N (routing, agent desktop)` |
 
-### 5.3 Not evaluable without an implementation
+### 5.3 Cross-cutting runtime and interface gaps
 
-| Area | Why not evaluable | Future method |
+| Area | Why runtime is not evaluable | Future method |
 |---|---|---|
 | Visual hierarchy, contrast, target size | No rendered interface | Inspect a build; WCAG 2.2 checks |
 | Keyboard, focus order, screen reader | No DOM or assistive-technology behaviour | Manual accessibility testing |
@@ -191,6 +192,8 @@ Cells list the primary criteria and the strongest status. The full list of crite
 | Notification delivery | No email/SMS provider | Delivery logs and test accounts |
 | Transfer routing and agent desktop | No contact-centre system | Simulated or staging routing |
 | User comprehension and emotional response | No participants | Usability test or interviews, outside this protocol |
+
+The documentary layer can still be evaluated, but it describes intent. The runtime layer remains a gap until a build exists.
 
 ## 6. Findings model
 
@@ -207,9 +210,12 @@ Cells list the primary criteria and the strongest status. The full list of crite
 | `observation` | What the document says; quote or close paraphrase |
 | `hypothetical_consequence` | A possible guest or agent consequence, explicitly not measured |
 | `severity` | 0–4, from section 7 |
-| `confidence` | `high`, `medium` or `low`, from section 8 |
+| `confidence_observation` | Strength of the documentary observation: `high`, `medium` or `low`, from section 8.1 |
+| `confidence_interpretation` | Strength of the interpretation or consequence: `high`, `medium` or `low`, from section 8.2 |
 | `recommendation` | A concrete change to the document or a future test |
 | `future_validation` | What would confirm or reject the hypothesis |
+| `reproduction_status` | `pending`, `confirmed`, `not_reproduced` or `requires_review` |
+| `reproduction_note` | Divergence and rationale when another evaluator reads the passage differently |
 
 ### 6.2 Writing rules
 
@@ -217,8 +223,8 @@ Cells list the primary criteria and the strongest status. The full list of crite
 - Do not merge a safe-state observation with a separate notification issue.
 - Do not use “users will”; use “a guest may”.
 - A `documentary_gap` names what is missing and why it matters; it does not claim the implementation lacks it.
-- A `hypothesis` is allowed when the consequence depends on an absent interface, but confidence cannot exceed `low`.
-- Delete a finding if a second evaluator cannot reproduce the observation from the cited passage.
+- A `hypothesis` is allowed when the consequence depends on an absent interface, but `confidence_interpretation` cannot exceed `low`.
+- A finding that is not reproduced by a second evaluator is **kept** with `reproduction_status` set to `not_reproduced` or `requires_review`, the divergence and the rationale. Do not delete evidence because two evaluators read the passage differently.
 
 ## 7. Severity scale
 
@@ -238,27 +244,39 @@ Adapted from Jakob Nielsen, *Severity Ratings for Usability Problems*, Nielsen N
 - A direct contradiction with a stated safety rule starts at 3.
 - A finding whose consequence depends on an absent interface is provisional and cannot be presented as observed.
 - A `documentary_gap` with no evidence of implementation behaviour is at most 2 unless the missing text itself would permit a critical action.
-- Severity and confidence are independent: a high-severity risk can have low confidence.
+- Severity and both confidence judgements are independent: a high-severity risk can have low interpretation confidence.
 
-## 8. Confidence scale
+## 8. Confidence scales
 
-Confidence describes the strength of the documentary support, not a statistical probability.
+Confidence describes the strength of the documentary support, not a statistical probability. It is recorded twice: once for what the document says and once for the interpretation placed on it.
+
+### 8.1 Confidence in the observation
 
 | Level | Definition | Example |
 |---|---|---|
-| High | Direct, explicit passage supports the observation; no inference beyond reading | The dialogue says “No change has been made” while the state remains `verification_pending` |
-| Medium | The observation requires combining two explicit passages or one interpretive step | A message gives a next step but does not acknowledge the guest’s earlier intent |
-| Low | The observation depends on missing implementation, ambiguous wording or an unstated behaviour | A claim about what a screen-reader user would hear |
+| High | The cited passage directly supports what is recorded as present or absent; no inference beyond reading | The section contains no sentence linking the earlier `CONFIRM` to the secure-page confirmation |
+| Medium | The observation requires combining two passages or resolving a wording ambiguity | Two sections describe the same state with different labels |
+| Low | The passage is incomplete, internally contradictory or depends on an absent implementation | A claim about what the guest sees before the page renders |
+
+### 8.2 Confidence in the interpretation
+
+| Level | Definition | Example |
+|---|---|---|
+| High | The inference is tightly constrained by the passage and alternatives are implausible | A false confirmation appears while the state is still `request_received` |
+| Medium | One plausible alternative reading or user reaction remains | A message gives a next step but does not acknowledge the guest’s earlier intent |
+| Low | The consequence depends on absent implementation, unknown user behaviour or an unstated system response | A claim about what a screen-reader user would hear |
+
+Observation confidence and interpretation confidence are not averaged. A directly observed sentence can have high observation confidence while the claimed guest consequence remains low or medium.
 
 ## 9. Procedure
 
 1. **Freeze the baseline.** Record repository, commit, document hashes and the P1 reference.
 2. **Build the evidence index.** Confirm every file exists and every cited section is present.
 3. **Discovery pass.** Read each channel and state; record observations without criteria or severity.
-4. **Classification pass.** Apply the primary criterion, split findings, assign type, severity and confidence.
+4. **Classification pass.** Apply the primary criterion, split findings, assign type, severity and both confidence judgements.
 5. **Coverage check.** Mark every `N`/`NA` cell and add it to the limitations; do not convert it into a finding.
-6. **Pilot reproduction.** A second evaluator applies the protocol to the pilot excerpt and compares the observation, criterion and recommendation.
-7. **Consolidation.** Deduplicate, label hypotheses, and write the limitations.
+6. **Pilot reproduction.** A second evaluator applies the protocol to the pilot excerpt before reading the conclusion and records `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale.
+7. **Consolidation.** Deduplicate, label hypotheses, and write the limitations; keep divergent readings as review information.
 8. **Review gate.** The protocol and pilot are approved before the full evaluation begins.
 
 ### 9.1 Review gate
@@ -269,7 +287,7 @@ The full evaluation may start only when:
 - the frameworks and adaptations are approved;
 - the coverage matrix is complete, including non-evaluable items;
 - the findings model and severity rules are approved;
-- the pilot is reproducible;
+- the pilot has a recorded reproduction status and any divergences have been discussed;
 - the limitations are accepted.
 
 ## 10. Pilot — one email excerpt
@@ -297,28 +315,33 @@ The section also states that the guest must verify and then confirm on the secur
 | `channel` | `email` |
 | `state` | `verification_pending` |
 | `baseline` | `afa3c60`, `docs/02-cancellation-journey.md`, “Email — CONFIRM without a verified session” |
-| `criterion` | Primary `X2` (consent bound to verification); secondary `N5`, `N9`, `I5`, `I6`, `X4` |
+| `criterion` | Primary `N1` (visibility of status and next step); secondary `N9`; `X2` supplies context; `X4` continuity |
 | `observation` | The reply correctly refuses to treat the plain `CONFIRM` as consent, says no change has been made, and points to the secure link. It does not explicitly say whether the earlier `CONFIRM` will be carried forward or whether the guest must confirm again after verification. |
 | `hypothetical_consequence` | A guest may believe the reply already completed the cancellation, or may believe the earlier `CONFIRM` will carry forward and not complete the secure-page step; this could add a clarification cycle or cause abandonment. This is not measured. |
 | `severity` | 2 — minor: the safe state is explicit and the next step is present, but continuity of intent is not stated. |
-| `confidence` | Medium — the observation is explicit; the consequence requires one inference about comprehension. |
-| `recommendation` | Add one sentence after “No change has been made”: “Your CONFIRM has been received, but it is not consent; after verification you will review the charge and confirm on the secure page. You will not need to re-enter the booking details.” |
-| `future_validation` | A comprehension test with 5–8 participants, asking “What do you need to do next?” and “Has your booking changed?”; a second evaluator should reproduce the finding from the same passage. This test is outside the current ticket. |
+| `confidence_observation` | High — the absence of a sentence linking the earlier `CONFIRM` to the secure-page confirmation is directly verifiable in the cited section. |
+| `confidence_interpretation` | Medium — the guest reaction is a plausible inference; the text does not measure comprehension. |
+| `recommendation` | Add one sentence after “No change has been made”: “Your CONFIRM has been received, but it is not consent; after verification you will review the charge and confirm on the secure page.” Do not promise that booking details will be retained. |
+| `future_validation` | A comprehension test with 5–8 participants, asking “What do you need to do next?” and “Has your booking changed?”; check whether the secure page retains booking details as a design question, without promising it to the guest. Independent reproduction is also required. Neither test is part of this protocol. |
+| `reproduction_status` | `pending` — no independent blind reproduction has been completed. |
+| `reproduction_note` | If a second evaluator reads the passage differently, record `not_reproduced` or `requires_review` with the divergence and rationale; do not delete the finding. |
+
+`X2` is context, not the primary criterion: the document already requires consent inside the verified session. The finding is about the clarity of the message and the next step, so `N1` is primary and `N9` is secondary. The recommendation does not claim that the secure page retains booking details; that is a design question to verify.
 
 ### 10.4 Traceability
 
 | Link | Content |
 |---|---|
 | Evidence | `EV-04` / `EV-05`: email plain-CONFIRM section |
-| Criterion | `X2` consent binding; `N5` error prevention; `N9` recovery; `I5` controllability; `I6` error robustness; `X4` continuity |
+| Criterion | Primary `N1` visibility; secondary `N9` recovery; `X2` context (consent rule is documented); `X4` continuity |
 | Observation | The refusal is safe; the continuity of the earlier intent is not stated |
 | Hypothesis | Possible repeated request, confusion or abandonment — not measured |
-| Recommendation | Add the intent-continuity sentence without accepting the plain reply as consent |
-| Validation | Comprehension test and independent reproduction; not part of this ticket |
+| Recommendation | Clarify that final confirmation happens after verification, without promising data retention |
+| Validation | Comprehension test and independent reproduction; neither is part of this protocol |
 
 ### 10.5 Pilot result
 
-The protocol produces a traceable finding: a reader can move from the exact passage to a criterion, an observation, a hypothetical consequence, a severity, a confidence and a recommendation. A second evaluator can reproduce the observation without seeing the first evaluator’s conclusion. The pilot does **not** validate the guest experience or the frequency of the problem.
+The protocol produces a traceable finding: a reader can move from the exact passage to a criterion, an observation, a hypothetical consequence, a severity, two confidence judgements and a recommendation. The observation confidence is high because the absence is directly readable; the interpretation confidence is medium because the guest reaction is inferred. The pilot does **not** validate the guest experience or the frequency of the problem.
 
 ### 10.6 Reproduction check
 
@@ -327,10 +350,10 @@ A second evaluator should:
 1. check out `afa3c60` and open `docs/02-cancellation-journey.md`;
 2. read only “Email — CONFIRM without a verified session”;
 3. fill the finding model without reading section 10.3;
-4. compare the observation, primary criterion and recommendation;
-5. record any difference in severity or confidence with a reason.
+4. compare the observation, primary criterion, severity and recommendation;
+5. record `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale.
 
-Expected result: the same observation — the reply is safe but does not state whether the earlier `CONFIRM` carries forward — and the same primary criterion, `X2` consent binding. A different severity is acceptable if justified; a different observation means the finding is not yet reproducible. Independent reproduction is a review gate; it has not been claimed as completed in this draft.
+Expected result: the same observation — the reply is safe but does not state whether the earlier `CONFIRM` carries forward — and the same primary criterion, `N1` visibility. A different severity is acceptable if justified. A different observation is recorded as `not_reproduced` or `requires_review`, not deleted: the disagreement is information for the methodological review. Independent reproduction is a review gate; it has not been claimed as completed in this draft.
 
 ## 11. Limitations
 
@@ -339,7 +362,7 @@ Expected result: the same observation — the reply is safe but does not state w
 - No WCAG conformance is claimed. WCAG does not cover telephony or voice interfaces directly.
 - Voice-specific accessibility remains a declared gap; ISO 9241-154 informs the review but is not a clause-level conformance claim.
 - Severity is a proposed heuristic priority, not measured impact or probability.
-- Confidence is documentary support, not statistical confidence.
+- Both confidence judgements describe documentary support, not statistical confidence.
 - An absent statement is not proof of an absent behaviour.
 - A `not evaluable` item is a coverage gap, not a violation.
 - The pilot is a method test, not an evaluation of user experience.
@@ -356,7 +379,7 @@ Accessed 12 November 2026.
 4. ISO 9241-154:2013, *Ergonomics of human-system interaction — Part 154: Interactive voice response (IVR) applications*, Edition 1, 2013-02. https://www.iso.org/standard/52172.html
 5. W3C, *Web Content Accessibility Guidelines (WCAG) 2.2*, W3C Recommendation, 12 December 2024. https://www.w3.org/TR/WCAG22/
 6. W3C, *WAI-ARIA 1.2*, W3C Recommendation, 6 June 2023. https://www.w3.org/TR/wai-aria-1.2/
-7. P6 Core, `docs/02-cancellation-journey.md`, baseline `afa3c60`.
+7. Conversation-design Core, `docs/02-cancellation-journey.md`, baseline `afa3c60`.
 8. P1 public contract, `README.md` and `app/schema.py`, baseline `cf738f2`. https://github.com/luizfroes-automation/handover-intelligence-portfolio/tree/cf738f2
 
 ## 13. Approval checklist
@@ -364,8 +387,8 @@ Accessed 12 November 2026.
 - [ ] Baseline and hashes verified.
 - [ ] Nielsen, ISO and WCAG references accepted, with adaptations declared.
 - [ ] Coverage matrix accepted, including `N`/`NA`.
-- [ ] Findings model and severity/confidence rules accepted.
-- [ ] Pilot reproduced by a second evaluator.
+- [ ] Findings model and severity and both confidence scales accepted.
+- [ ] Pilot reproduction status recorded and divergences discussed.
 - [ ] Limitations accepted.
 - [ ] Full evaluation authorised separately.
 
