@@ -65,6 +65,7 @@ The channel changes the mechanics, not the policy. A request is handled in the s
 7. **Unknown is a state.** A timeout or transport failure is neither success nor failure; reconcile with the booking system before any retry or customer claim.
 8. **Notification is not the cancellation.** If the system confirms but the message fails, the booking remains cancelled and the delivery failure is handled separately.
 9. **Redact verification material.** One-time codes, secure links and tokens never enter the P1 transcript; only the verification result does.
+10. **Consent is bound to verification.** In email, the confirmation is an action inside the secure session, not a plain reply. A `CONFIRM` without that session must re-verify before anything changes.
 
 ## Out of scope
 

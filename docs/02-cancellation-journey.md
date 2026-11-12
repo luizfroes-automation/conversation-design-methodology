@@ -10,6 +10,8 @@ The three channels share the same states. The channel changes how the guest supp
 | `booking_located` | A booking matches the reference or contact details | Nothing about the booking until identity is verified | Property, dates, price or policy details |
 | `identity_verified` | The guest controls the contact on the booking | Booking summary and the applicable policy | That cancellation is already complete |
 | `policy_resolved` | The applicable rule is unambiguous | The rule, the charge and what happens next | A promise of a refund outside the rule |
+| `policy_ambiguous` | The rate, promotion or policy conflict and no single rule can be established | “I can’t decide which rule applies; I can transfer this for review.” | A final charge, refund or cancellation promise |
+| `consent_bound` | The guest confirmed inside the verified session (email) or verified conversation (chat/voice) | “You have confirmed the cancellation on these terms.” | That the cancellation is already complete |
 | `cancellation_unknown` | The cancellation call returned no definitive result | “I can’t confirm whether the cancellation went through; the booking must be reconciled first.” | “Cancelled”, “not cancelled” or “try again” before reconciliation |
 | `cancellation_failed` | The booking system returned a definite failure | “The booking system did not cancel it.” | That the booking is cancelled |
 | `cancellation_executed` | The booking system returned a successful cancellation result and a reference | “The booking system has cancelled the booking.” | That the guest has already been notified |
@@ -215,30 +217,43 @@ To protect your booking, verify your identity using the secure link below.
 The link expires in 30 minutes:
 [Secure verification link]
 
-Once verified, we will show the applicable policy and ask you to confirm the
-cancellation. No change has been made to your booking yet.
+Once verified, you will review the applicable charge and confirm the
+cancellation on the secure page. A reply to this email is not a confirmation.
+No change has been made to your booking yet.
 ```
 
 After verification, the automation sends the consent message:
 
 ```text
-Subject: Please confirm your cancellation — FF-4821-QM
+Subject: Review and confirm your cancellation — FF-4821-QM
 
-Your identity is verified. You are booked at Seabrook Cabin,
-14–16 March 2027.
+Your identity is verified for this request. Use the secure page below to review
+the charge and confirm the cancellation. This email is not the consent step.
 
-The displayed rate is Flexible. Cancellation is free until 28 February.
-Today is 2 March, so one night is chargeable and the breakfast add-on is
-non-refundable.
+Booking: Seabrook Cabin, 14–16 March 2027.
+Displayed rate: Flexible.
+Cancellation charge: one night, because the request is after 28 February.
+The breakfast add-on is non-refundable.
 
-If you want to cancel on those terms, reply CONFIRM or use the secure
-confirmation page. No change has been made to your booking yet.
+[Secure confirmation page]
+
+No change has been made to your booking yet. If you reply CONFIRM without using
+the secure page, we will ask you to verify again: a reply alone is not linked to
+the verified session.
 ```
 
-The guest replies:
+The guest reviews the charge and confirms in the verified session:
 
 ```text
-CONFIRM
+[Secure page — verified session for FF-4821-QM]
+
+Booking: Seabrook Cabin, 14–16 March 2027.
+Displayed rate: Flexible.
+Cancellation charge: one night; breakfast non-refundable.
+
+[Confirm cancellation]   [Keep booking]
+
+Guest: (selects Confirm cancellation)
 ```
 
 Only then does the automation execute the cancellation and send:
@@ -253,7 +268,27 @@ The breakfast add-on is non-refundable.
 A confirmation is attached to this thread. No further action is needed.
 ```
 
-Rules: the first email is a request acknowledgement, not a confirmation; the consent email states the charge before execution and requires an explicit reply; identity requires the secure link or a code, not the From address alone; the subject line changes only after the system confirms; the thread keeps the full record.
+Rules: the first email is a request acknowledgement, not a confirmation; the consent email states the charge and sends the guest to the secure page; consent is the action taken inside the verified session, not a plain `CONFIRM` reply; if the session is missing or expired, the guest must verify again; identity requires the secure link or a code, not the From address alone; the subject line changes only after the system confirms; the thread keeps the full record.
+
+### Email — CONFIRM without a verified session
+
+A plain `CONFIRM` email is not consent. It is only a request to proceed; it must be bound to the session that completed identity verification.
+
+```text
+Guest email: CONFIRM
+
+Automatic reply:
+We received your CONFIRM, but it is not linked to a verified session for this
+request. No change has been made to your booking.
+
+To continue, use the secure link below to verify your identity and review the
+charge on the secure page. A reply to this email is not enough on its own.
+[Secure verification link]
+
+If you cannot use the link, we can transfer you to bookings support.
+```
+
+Rules: do not cancel; do not disclose booking details to an unverified sender; ask for verification; after the verification step, the guest must confirm on the secure page. If verification cannot be completed, transfer.
 
 ### Email — booking not located
 
@@ -275,6 +310,28 @@ Reply that the booking system did not respond and that the cancellation result i
 
 If the booking system confirms the cancellation but the confirmation email cannot be delivered, keep the case open and retry delivery or use another contact route. State that the cancellation is confirmed and the message delivery failed. Do not send a “request received” or “not cancelled” message, and do not ask the guest to cancel again.
 
+### Email — documental walkthrough
+
+This is a documentary simulation. The repository contains no implementation that executes these cases; the table records the expected state at each step.
+
+| Scenario | Step | Expected state | Expected observable |
+|---|---|---|---|
+| Happy path | Request arrives | `request_received` | Acknowledgement says it is not a cancellation confirmation |
+| Happy path | Secure link completed | `identity_verified` | Session is bound to the booking; no details shown before this point |
+| Happy path | Consent page reviewed | `policy_resolved` | Charge is displayed; no change made |
+| Happy path | Guest confirms on the secure page | `consent_bound` | Consent is tied to the verified session; execution is authorised |
+| Happy path | Booking system returns success | `cancellation_executed` | Cancellation reference exists |
+| Happy path | Confirmation email delivered | `notification_sent` | Reference delivered; thread closed |
+| Plain `CONFIRM` | Email arrives without a verified session | `verification_pending` | No change; reply asks the guest to verify |
+| Plain `CONFIRM` | Guest completes verification and confirms on the secure page | `identity_verified` → `consent_bound` | Consent is now bound; execution may proceed |
+| Plain `CONFIRM` | Guest cannot verify | `verification_pending` → transfer | No change; transfer with the thread |
+| Ambiguous policy | Identity verified | `identity_verified` | Booking visible; rate conflict identified |
+| Ambiguous policy | Policy checked | `policy_ambiguous` → transfer | No execution; no final charge promise |
+| System unavailable | Guest confirms; call returns no result | `cancellation_unknown` | No retry; no success or failure claim |
+| System unavailable | Reconciliation shows cancellation applied | `cancellation_executed` | Reference exists; no retry |
+| System unavailable | Reconciliation shows no cancellation | `cancellation_failed` | Retry may be offered under policy |
+| Notification failure | System confirms; email delivery fails | `notification_failed` | Booking remains cancelled; delivery is followed up separately |
+
 ## Channel parity checks
 
 Before a journey is considered coherent, the same synthetic request should produce the same state and the same policy answer in all three channels:
@@ -284,6 +341,7 @@ Before a journey is considered coherent, the same synthetic request should produ
 | Booking details hidden before identity | Yes | Yes | Yes |
 | One-time code or secure link | Yes | Yes | Yes |
 | Explicit confirmation before execution | Yes | Yes | Yes |
+| Consent bound to verification | Yes, in conversation | Yes, in conversation | Yes, secure session |
 | Confirmation only after system response | Yes | Yes | Yes |
 | Ambiguous policy transferred, not guessed | Yes | Yes | Yes |
 | System failure never described as success | Yes | Yes | Yes |

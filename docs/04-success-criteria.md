@@ -18,13 +18,14 @@ The criteria below are observable in a manual walkthrough. They are not measured
 | SC-06 | Request is not confirmation | The acknowledgement distinguishes request from confirmed cancellation | The acknowledgement contains a clear “not a cancellation confirmation” statement |
 | SC-07 | Continuity after transfer | Human receives the original conversation and the collected context | Human does not ask for booking reference, dates, contact details or reason again |
 | SC-08 | Channel parity | The same scenario reaches the same state and policy answer in chat, voice and email | State and policy outcome match across the three channels |
-| SC-09 | Explicit confirmation | The automation asks the guest to confirm the charge and the cancellation before executing | A confirmation turn is present in every channel before the cancellation call |
+| SC-09 | Explicit confirmation | The automation asks the guest to confirm the charge and the cancellation before executing | Chat/voice: a confirmation turn in the verified conversation; email: confirmation inside the verified secure session |
 | SC-10 | Safe retry boundary | An unknown result is not retried until reconciliation | No second cancellation call after an unknown result before reconciliation; a retry follows only when reconciliation shows no cancellation |
 | SC-11 | P1 boundary | The handover package is not treated as a cancellation result | P1 `handoff_needed: true` never appears as “cancelled” in the customer record |
 | SC-12 | Data minimisation | Only synthetic data appears in examples and tests | No real name, booking, contact, employer or production detail |
 | SC-13 | Verification material redacted | The P1 transcript contains no code, secure link or token | The payload shows `[verification code redacted]` or equivalent and carries only the verification result |
 | SC-14 | Unknown, executed and notified are distinct | The case records separate cancellation and notification states | `unknown` is not used as success or failure; a notification failure does not undo a confirmed cancellation |
 | SC-15 | Transfer precedence | A journey-required transfer or guest request proceeds independently of P1 | Transfer happens even when P1 is unavailable or returns `handoff_needed: false`; the package is advice |
+| SC-16 | Email consent binding | Email consent is tied to the session that completed identity verification | A plain `CONFIRM` reply without a verified session does not cancel; the system asks for verification |
 
 ## Manual test cases
 
@@ -60,13 +61,14 @@ Each case is run in the channel named. “Pass” means every expected observati
 
 | ID | Setup | Expected observable result |
 |---|---|---|
-| EMAIL-01 | Guest emails `FF-4821-QM`; secure link; consent email states charge; guest replies CONFIRM | First reply says request received, not cancelled; consent message states one-night charge; no execution before CONFIRM; separate confirmation email with reference |
+| EMAIL-01 | Guest emails `FF-4821-QM`; secure link; consent page states charge; guest confirms on the secure page | First reply says request received, not cancelled; consent page states one-night charge; no execution before the secure-page confirmation; separate confirmation email with reference |
 | EMAIL-02 | Reference cannot be found after two replies | No booking details; thread transferred; “nothing has been cancelled” |
 | EMAIL-03 | Secure link expires; no alternative verification | No booking details; transfer or one documented replacement link; no cancellation |
 | EMAIL-04 | Ambiguous rate and promotion | Conflict stated; no final policy promise; thread transferred to policy review |
 | EMAIL-05 | Booking system unavailable | State is `unknown`; no cancellation confirmed; no retry until reconciliation; case reference; no confirmation template |
 | EMAIL-06 | Handover after verification | Human sees the full thread and the P1 package; customer is not asked to repeat the booking reference or reason |
 | EMAIL-07 | Cancellation confirmed but confirmation email fails | Booking remains cancelled; notification failure handled separately; resend or alternative contact; no re-cancellation request |
+| EMAIL-08 | A plain `CONFIRM` email arrives without a verified session | No change; no booking details; reply asks the guest to verify and use the secure page, or transfer; no cancellation |
 
 ### Handover
 
@@ -104,11 +106,13 @@ The metrics are deliberately conservative. A high completion rate is not a succe
 - The same synthetic request is designed for chat, voice and email.
 - All four exception families are covered: booking not located, identity not confirmed, policy ambiguous, system unavailable.
 - Each channel distinguishes request received, cancellation unknown, cancellation confirmed and notification failed.
+- Email consent is bound to the verified secure session; a plain `CONFIRM` reply does not authorise a change.
 - The P1 handover uses only fields the current public schema supports and names the channel-side fields that P1 does not have.
 - Verification codes, secure links and tokens are removed before the transcript reaches P1.
 - A journey-required transfer proceeds even when P1 is unavailable or returns `handoff_needed: false`.
 - The original conversation is retained by the channel; the human receives it with the case.
 - Manual cases cover confirmation, privacy, policy, failure, unknown reconciliation, notification failure and continuity.
+- The email flows have a documentary walkthrough with the expected state at each step; it is not an implementation claim.
 - The documents are reviewed before any heuristic evaluation.
 
 ## Out of scope for this Core

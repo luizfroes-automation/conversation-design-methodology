@@ -78,7 +78,7 @@ The guest requests cancellation on **2 March 2027**, which is 12 days before che
 ## Open questions for review
 
 1. Is one-time code to the contact on the booking sufficient for chat and voice, or should high-value bookings require a second factor?
-2. For email, should a reply from the registered address plus a secure link be the minimum, or is the link alone sufficient?
+2. For email, is the secure session alone sufficient for all bookings, or should high-value bookings require a second factor?
 3. When the policy is ambiguous, should the automation be allowed to quote the displayed rule as “the rule I can see” without implying it is final?
 4. How many failed location or verification attempts should trigger a transfer rather than another clarification loop?
 5. Which team should receive a policy ambiguity in P1’s current `suggested_team` enum: `billing` or `escalations`?
