@@ -290,9 +290,9 @@ Observation confidence and interpretation confidence are not averaged. A directl
 3. **Discovery pass.** Read each channel and state; record observations without criteria or severity.
 4. **Classification pass.** Apply the primary criterion, split findings, assign type, severity and both confidence judgements.
 5. **Coverage check.** Mark every `N`/`NA` cell and add it to the limitations; do not convert it into a finding.
-6. **Blind operational reproduction.** One or more blind evaluators apply the protocol to the pilot excerpt before reading the conclusion. Each evaluator is identified as AI or human, and the packet used is recorded. The result is recorded as `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale. A human evaluator is not mandatory for this portfolio gate; the absence of one is a declared limitation.
+6. **Blind operational reproduction.** One or more blind evaluators apply the protocol to the pilot excerpt before reading the conclusion. Each evaluator is identified as AI or human, and the packet used is recorded. The result is recorded as `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale. A human evaluator is not mandatory for this portfolio gate; the absence of one is a declared limitation. An external reading supplied without a recorded packet is kept as a reading but does not satisfy the blind-reproduction requirement on its own.
 7. **Consolidation.** Deduplicate, label hypotheses, and write the limitations; keep divergent readings as review information.
-8. **Methodological review.** The protocol, the recorded reproductions and the divergences are reviewed before the full evaluation begins.
+8. **Methodological review.** The protocol, the recorded readings and the divergences are reviewed before the full evaluation begins.
 
 ### 9.1 Review gate
 
@@ -302,7 +302,7 @@ The full evaluation may start only when:
 - the frameworks and adaptations are approved;
 - the coverage matrix is complete, including non-evaluable items;
 - the findings model and severity rules are approved;
-- a documented blind operational reproduction exists, with each evaluator identified as AI or human and the packet used recorded;
+- a documented blind operational reproduction exists (A and B here), with each evaluator identified as AI or human and the packet used recorded; external readings without a recorded packet are listed separately and do not satisfy this bullet alone;
 - the divergences are recorded and discussed;
 - the limitations include the absence of human independent review, participant testing and interface observation;
 - the new HEAD is approved methodologically.
@@ -340,7 +340,7 @@ The section also states that the guest must verify and then confirm on the secur
 | `confidence_interpretation` | Low — the guest reaction depends on unknown user behaviour; the text does not measure comprehension. |
 | `recommendation` | Add one sentence after “No change has been made”: “Your CONFIRM has been received, but it is not consent; after verification you will review the charge and confirm on the secure page.” Do not promise that booking details will be retained. |
 | `future_validation` | A comprehension test with 5–8 participants, asking “What do you need to do next?” and “Has your booking changed?”; check whether the secure page retains booking details as a design question, without promising it to the guest. Independent reproduction is also required. Neither test is part of this protocol. |
-| `reproduction_status` | `not_reproduced` — four AI operational readings did not reproduce this finding as framed: two found no problem and two found different gaps. No human independent review. |
+| `reproduction_status` | `not_reproduced` — four AI readings did not reproduce this finding as framed: two found no problem and two found different gaps. No human independent review. |
 | `reproduction_note` | The four readings are recorded in sections 10.7, 10.9, 10.10 and 10.11. Divergences are preserved; they are not user validation. |
 
 `X2` is context, not the primary criterion: the document already requires consent inside the verified session. The finding is about the clarity of the message and the next step, so `N1` is primary and `N9` is secondary. The recommendation does not claim that the secure page retains booking details; that is a design question to verify. The observation confidence is high, but the interpretation confidence is low because the guest reaction is unknown; the severity remains a documentary priority, not a measured impact.
@@ -372,9 +372,9 @@ For a blind operational reproduction, the reviewer prepares a packet containing:
 
 The evaluator fills the finding model without consulting the existing conclusion. Each evaluator is identified as AI or human, and the packet used is recorded with the result. The reviewer compares the observation, primary criterion, severity and recommendation and records `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale.
 
-Expected comparison: the same observation — the reply is safe but does not state whether the earlier `CONFIRM` carries forward — and the same primary criterion, `N1` visibility. A different severity is acceptable if justified. A different observation is recorded as `not_reproduced` or `requires_review`, not deleted. Four AI blind readings are recorded in sections 10.7, 10.9, 10.10 and 10.11; none reproduced the original finding as framed. A human evaluator is desirable but is not a mandatory gate in this portfolio context; the absence is declared in the limitations.
+Expected comparison: the same observation — the reply is safe but does not state whether the earlier `CONFIRM` carries forward — and the same primary criterion, `N1` visibility. A different severity is acceptable if justified. A different observation is recorded as `not_reproduced` or `requires_review`, not deleted. Four AI readings are recorded in sections 10.7, 10.9, 10.10 and 10.11; none reproduced the original finding as framed. A and B used the documented blind packet; C and D are external responses without a recorded packet or session log. A human evaluator is desirable but is not a mandatory gate in this portfolio context; the absence is declared in the limitations.
 
-### 10.7 AI operational reading A — result
+### 10.7 AI reading A — OpenCode operational reproduction
 
 **Evaluator:** an AI session in OpenCode (`ses_e2e3714dfffeRcuNrundC2K67G`), with no access to any part of section 10, given only sections 1–9, the baseline excerpt and the blank finding model. Packet: `p6_blind_packet.md`.
 **Status:** AI operational reading completed; this reading did not reproduce the original finding as framed; no human independent review was performed.
@@ -393,7 +393,7 @@ Expected comparison: the same observation — the reply is safe but does not sta
 
 Reading A also identified three adjacent candidates — a transfer alternative with no stated invocation route, “the charge” as a definite reference, and the tension between the no-change statement and the no-disclosure rule — and kept them separate rather than folding them into the finding.
 
-**Decision:** the operational reading shows that the packet can produce a finding without the conclusion, but it does **not** confirm the first reading. It is one of four AI operational readings; it is not a human review and it is not user validation. The calibration decision is recorded in section 10.8; it preserves this reading and defines how the protocol applies to this case.
+**Decision:** the operational reading shows that the packet can produce a finding without the conclusion, but it does **not** confirm the first reading. It is one of four AI readings; it is not a human review and it is not user validation. The calibration decision is recorded in section 10.8; it preserves this reading and defines how the protocol applies to this case.
 
 ### 10.8 Calibration decision
 
@@ -417,7 +417,7 @@ The three adjacent candidates — the transfer route, “the charge” reference
 
 **Calibration status:** `accepted_for_this_case`. Methodological approval remains pending; no human independent review was performed. The AI readings did not validate the finding or the guest experience.
 
-### 10.9 AI operational reading B — OpenCode `NO FINDING`
+### 10.9 AI reading B — OpenCode `NO FINDING`
 
 **Evaluator:** an AI session in OpenCode (`ses_e2e2221fcffe2VhIQd76Wfmcsd`), given the blind packet `p6_blind_packet_c866d61.md` and asked not to force a finding. It had no access to any part of section 10 and saw no prior conclusion.
 **Result:** `NO FINDING`.
@@ -427,7 +427,7 @@ The evaluator found the reply consistent with `X1`, `X2`, `N5`, `N1`/`I2`, `N9`/
 
 This is an **AI operational reading, not a human independent review**. It is the only reading that explicitly considered and rejected the transfer-route gap; it is not the same artefact as the external `NO FINDING` reading in section 10.10.
 
-### 10.10 AI operational reading C — external `NO FINDING`
+### 10.10 AI reading C — external `NO FINDING`
 
 **Provenance:** a separate AI evaluator, not found in the local OpenCode session store. The response was supplied verbatim by the reviewer as “Resposta 1”; the full packet and session log are not available, only the baseline excerpt and the result.
 **Result:** `NO FINDING`; the evaluator recorded `severity: 0 — Not a problem`.
@@ -447,9 +447,9 @@ The evaluator filled the model as an `observation` in state `Consent`, with `X2`
 | `confidence_interpretation` | `high` |
 | `reproduction_status` | `pending` in the original submission |
 
-This is an **AI operational reading, not a human independent review**. Its `high` interpretation confidence is its own judgement; the protocol’s section 8.2 rule and the calibration in 10.8 retain `low` for the original finding. The calibration is not changed by this reading.
+This is an **external AI reading, not a human independent review**. Its `high` interpretation confidence is its own judgement; the protocol’s section 8.2 rule and the calibration in 10.8 retain `low` for the original finding. The calibration is not changed by this reading.
 
-### 10.11 AI operational reading D — external `documentary_gap` (`N9`)
+### 10.11 AI reading D — external `documentary_gap` (`N9`)
 
 **Provenance:** a second external AI evaluator, also supplied verbatim by the reviewer as “Resposta 2”. It is distinct from reading C and from the OpenCode readings; the full packet and session log are not available.
 **Result:** `documentary_gap`; `severity: 2`.
@@ -471,9 +471,11 @@ The evaluator also recorded that it found no problem with `X2` and `X1` before f
 
 This reading is close to the transfer-route candidate that reading A listed as an adjacent possibility and reading B considered and rejected. Recording it as a separate reading preserves the divergence; it does not make the transfer route an approved finding. The full evaluation may examine it; the pilot does not expand to cover it.
 
-This is an **AI operational reading, not a human independent review**.
+This is an **external AI reading, not a human independent review**.
 
-### 10.12 Consolidated reproduction position
+### 10.12 Consolidated reading position
+
+> Four AI readings were recorded. A and B have locally recorded session and packet provenance. C and D were supplied as external responses; their full packets and session logs were unavailable. None constitutes user validation or independent human review.
 
 | Reading | Evaluator and provenance | Packet | Result | Status for the original finding |
 |---|---|---|---|---|
@@ -493,7 +495,7 @@ This is an **AI operational reading, not a human independent review**.
 - A and D found **different gaps** (`X1` and `N9` respectively).
 - “The original finding was not reproduced” is therefore broader than “no finding was found”: two readings found no problem, and two found a different problem.
 
-These AI readings are operational reproductions of the protocol, not user validation and not human independent review. Partial agreement on severity (A, D and the original all propose 2) is not agreement on cause or on the strength of the evidence.
+A and B are operational reproductions of the protocol; C and D are external readings whose packet and session conditions could not be verified. None is user validation or independent human review. Partial agreement on severity (A, D and the original all propose 2) is not agreement on cause or on the strength of the evidence.
 
 The transfer-route candidate remains separate, as a possibility to examine in the full evaluation. It is not an approved finding, it does not expand the pilot, and it is not counted as a reproduction failure.
 
@@ -510,7 +512,7 @@ No human independent review, participant testing or interface observation was pe
 - An absent statement is not proof of an absent behaviour.
 - A `not evaluable` item is a coverage gap, not a violation.
 - The pilot is a method test, not an evaluation of user experience.
-- No human independent review, participant testing or interface observation was performed. The four AI readings are operational readings, not user validation; the full evaluation must repeat this limitation.
+- No human independent review, participant testing or interface observation was performed. The four AI readings are not user validation; A and B have documented local provenance, C and D do not. The full evaluation must repeat this limitation.
 - The four AI readings diverged: two found no problem and two found different gaps; agreement on severity is not agreement on cause or on the strength of the evidence.
 - Readings C and D were supplied verbatim by the reviewer; their packet and session logs are unavailable, so their provenance is weaker than the recorded OpenCode sessions A and B.
 - The baseline may change after this protocol is approved; a new commit requires a new baseline record.
@@ -536,7 +538,7 @@ Accessed 12 November 2026.
 - [x] Nielsen, ISO and WCAG references identified; the ISO full texts were not consulted and that limit is declared.
 - [x] Coverage matrix drafted with documentary/runtime and `N`/`NA` distinctions.
 - [x] Findings model, severity scale and both confidence scales defined.
-- [x] Four AI operational readings recorded and identified as AI, with provenance: two OpenCode sessions (A, B) and two external responses (C, D).
+- [x] Four AI readings recorded: A and B have locally recorded session and packet provenance; C and D were supplied externally, without full packets or session logs.
 - [x] Divergences and the calibration decision recorded without deleting any reading.
 - [x] The distinction between “the original finding was not reproduced” and “no finding was found” stated explicitly.
 - [x] Limitations declared, including the absence of human independent review, participant testing and interface observation.
