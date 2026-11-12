@@ -6,6 +6,8 @@ Success is not “the bot completes the cancellation quickly”. It is that the 
 
 The criteria below are observable in a manual walkthrough. They are not measured production results.
 
+The protocol for the full heuristic evaluation is in `05`. The full evaluation has not been performed, and no independent human review of the evaluation, participant testing or interface observation has been conducted.
+
 ## Criteria
 
 | ID | Criterion | Observable evidence | Pass condition |
@@ -29,7 +31,7 @@ The criteria below are observable in a manual walkthrough. They are not measured
 
 ## Manual test cases
 
-Each case is run in the channel named. “Pass” means every expected observation is true.
+Each case describes a documentary walkthrough in the channel named. “Pass” means the expected observation is present in the design; it does not mean the case was executed against a running system or with participants.
 
 ### Chat
 
@@ -113,11 +115,11 @@ The metrics are deliberately conservative. A high completion rate is not a succe
 - The original conversation is retained by the channel; the human receives it with the case.
 - Manual cases cover confirmation, privacy, policy, failure, unknown reconciliation, notification failure and continuity.
 - The email flows have a documentary walkthrough with the expected state at each step; it is not an implementation claim.
-- The documents are reviewed before any heuristic evaluation.
+- The documents are methodologically reviewed before any full heuristic evaluation.
 
 ## Out of scope for this Core
 
-- Formal heuristic evaluation.
+- The full heuristic evaluation; the protocol and pilot are in `05`, but the evaluation has not been performed.
 - Usability testing with participants.
 - Production telemetry or measured baselines.
 - Implementation of chat, voice, email or booking-system integrations.

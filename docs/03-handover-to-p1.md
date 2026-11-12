@@ -2,13 +2,15 @@
 
 **Reference:** [handover-intelligence-portfolio](https://github.com/luizfroes-automation/handover-intelligence-portfolio) — the public README and `app/schema.py` at `cf738f2` were used for this contract.
 
+This document describes a design contract, not a running implementation; no implementation of this journey or of the P1 integration is included in this repository.
+
 ## What P1 does, and what it does not do
 
 The P1 service (`handover-intelligence-portfolio`) receives a transcript and returns a validated `HandoverPackage`. It does **not** execute a cancellation, queue a case, route a conversation, store the transcript or own the customer record. The P1 README is explicit that the caller chooses the review queue, keeps the conversation and deduplicates with its own identifier.
 
 That division is the basis of this handover design:
 
-- **P6 owns the journey:** channel state, identity, policy evidence, cancellation execution and customer communication.
+- **This Core owns the journey:** channel state, identity, policy evidence, cancellation execution and customer communication.
 - **P1 owns the structured assessment:** whether a human is needed, why, what was attempted, urgency, suggested team, confidence and flags.
 - **The channel orchestration owns the transfer:** it calls P1, interprets the package and hands the case to the contact-centre routing layer.
 - **The human owns the exception decision:** policy interpretation, identity exceptions and any action the automation could not complete.
@@ -192,7 +194,7 @@ These are triage signals for a human review; they are not a `HandoverPackage` an
 
 The connection is deliberately narrow:
 
-- P6 decides **when** a conversation needs a human and **what** the human needs to continue.
+- This Core decides **when** a conversation needs a human and **what** the human needs to continue.
 - P1 produces the **structured assessment** of that conversation.
 - The channel keeps the **original conversation** and the **case state**.
 - The human makes the **policy or exception decision**.
