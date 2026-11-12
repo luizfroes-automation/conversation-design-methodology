@@ -371,6 +371,27 @@ The evaluator fills the finding model without consulting the existing conclusion
 
 Expected result: the same observation — the reply is safe but does not state whether the earlier `CONFIRM` carries forward — and the same primary criterion, `N1` visibility. A different severity is acceptable if justified. A different observation is recorded as `not_reproduced` or `requires_review`, not deleted: the disagreement is information for the methodological review. Independent reproduction is a review gate; it has not been claimed as completed in this draft.
 
+### 10.7 AI operational reproduction — result
+
+**Evaluator:** a separate AI session, with no access to sections 10.3–10.6, given only sections 1–9, the baseline excerpt and the blank finding model.
+**Status:** operational reproduction completed; human independent reproduction remains pending.
+**Comparison status:** `requires_review`.
+
+| Dimension | First pilot | AI reproduction | Reading |
+|---|---|---|---|
+| State | `verification_pending` | `Consent` (also touches `Execution`) | Divergence in state naming; both are adjacent to the same passage. |
+| Observation | The reply is safe, but does not state whether the earlier `CONFIRM` carries forward or must be repeated after verification | The reply names verification and review but not the subsequent confirmation; verifying is not itself a cancellation | Partial convergence: both locate the missing final confirmation in the guest-facing text; the first frames it as continuity of intent, the second as an omitted step. |
+| Primary criterion | `N1` visibility | `X1` truthful state language | Divergence; both are plausible and need calibration. |
+| Severity | 2 | 2 | Convergence. |
+| `confidence_observation` | High | High | Convergence. |
+| `confidence_interpretation` | Low | Medium | Divergence: the AI’s medium conflicts with the section 8.2 rule for unknown user behaviour and needs review. |
+| Recommendation | Clarify that final confirmation happens after verification; do not promise data retention | State that verification is not cancellation and that confirmation on the secure page is required; do not describe the page beyond the excerpt | Convergence in intent; divergence in wording and emphasis. |
+| Type | `observation` | `documentary_gap` | Divergence; needs calibration. |
+
+The AI reproduction also identified three adjacent candidates — a transfer alternative with no stated invocation route, “the charge” as a definite reference, and the tension between the no-change statement and the no-disclosure rule — and kept them separate rather than folding them into the finding.
+
+**Decision:** the operational reproduction shows that the packet can produce a finding without the conclusion, but it does **not** satisfy the human-independent review gate and it does **not** confirm the first reading. The divergences are preserved. The follow-up calibration must decide whether the primary criterion is `N1` or `X1`, whether the type is `observation` or `documentary_gap`, how section 8.2 applies to interpretation confidence, and whether the recommendation should emphasise continuity of intent or the verification/confirmation distinction.
+
 ## 11. Limitations
 
 - The baseline is documentation, not a running product. It cannot show what a guest actually sees, hears or understands.
