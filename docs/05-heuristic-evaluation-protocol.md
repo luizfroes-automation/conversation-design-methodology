@@ -357,15 +357,15 @@ The section also states that the guest must verify and then confirm on the secur
 
 The protocol produces a traceable finding: a reader can move from the exact passage to a criterion, an observation, a hypothetical consequence, a severity, two confidence judgements and a recommendation. The observation confidence is high because the absence is directly readable; the interpretation confidence is low because the guest reaction is unknown and unmeasured. The pilot does **not** validate the guest experience or the frequency of the problem.
 
-### 10.6 Reproduction check
+### 10.6 Blind reproduction packet
 
-A second evaluator should:
+For an independent reproduction, the reviewer prepares a packet containing:
 
-1. check out `afa3c60` and open `docs/02-cancellation-journey.md`;
-2. read only “Email — CONFIRM without a verified session”;
-3. fill the finding model without reading section 10.3;
-4. compare the observation, primary criterion, severity and recommendation;
-5. record `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale.
+- sections 1–9 of this protocol, including the blank finding model;
+- the baseline excerpt at `afa3c60`: only “Email — CONFIRM without a verified session”;
+- no section 10.3, 10.4 or 10.5, and no summary of the expected finding.
+
+The evaluator fills the finding model without consulting the existing conclusion. The reviewer then compares the observation, primary criterion, severity and recommendation and records `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale.
 
 Expected result: the same observation — the reply is safe but does not state whether the earlier `CONFIRM` carries forward — and the same primary criterion, `N1` visibility. A different severity is acceptable if justified. A different observation is recorded as `not_reproduced` or `requires_review`, not deleted: the disagreement is information for the methodological review. Independent reproduction is a review gate; it has not been claimed as completed in this draft.
 
