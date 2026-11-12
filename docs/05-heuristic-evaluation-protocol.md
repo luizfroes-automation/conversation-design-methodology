@@ -98,7 +98,7 @@ Source: Jakob Nielsen, *10 Usability Heuristics for User Interface Design*, Niel
 
 ### 4.2 ISO 9241-110 interaction principles
 
-Source: ISO 9241-110:2020, *Ergonomics of human-system interaction — Part 110: Interaction principles*, Edition 2, 2020-05 (confirmed 2025). The standard is paywalled; this protocol uses the principles at a high level and does not reproduce or claim clause-level conformance.
+Source: ISO 9241-110:2020, *Ergonomics of human-system interaction — Part 110: Interaction principles*, Edition 2, 2020-05 (confirmed 2025). The public ISO page confirms the title and scope; the full standard was not consulted. The principle names below are the commonly published list, and the mapping is the project’s application, not a clause-level reading or a conformance claim.
 
 | Code | Principle | Application | Status |
 |---|---|---|---|
@@ -110,18 +110,20 @@ Source: ISO 9241-110:2020, *Ergonomics of human-system interaction — Part 110:
 | `I6` | Use error robustness | Unknown and failure states have a safe recovery path | Evaluable |
 | `I7` | User engagement | The tone supports continued interaction without pressure | Partially evaluable |
 
-### 4.3 Voice-specific reference
+### 4.3 Voice scope reference and project-proposed criteria
 
-Source: ISO 9241-154:2013, *Ergonomics of human-system interaction — Part 154: Interactive voice response (IVR) applications*, Edition 1, 2013-02 (confirmed 2026). The standard is paywalled; the protocol uses its subject matter at principle level only.
+Source for scope: ISO 9241-154:2013, *Ergonomics of human-system interaction — Part 154: Interactive voice response (IVR) applications*, Edition 1, 2013-02 (confirmed 2026). The public ISO page confirms that the standard addresses the user interface design of IVR applications; the full standard was not consulted.
 
-| Code | Voice criterion | Application | Status |
+`V1`–`V4` are **project-proposed criteria**, informed by general IVR concerns such as turn-taking, confirmation, error recovery and instructions that do not rely on a screen. They are not presented as criteria taken from ISO 9241-154, and no conformance is claimed.
+
+| Code | Project-proposed voice criterion | Application | Status |
 |---|---|---|---|
 | `V1` | Turn-taking and barge-in | The caller can interrupt, correct or ask for a human | Partially evaluable from script |
 | `V2` | Confirmation without visual memory | Key reference, charge and next step are read back or repeated | Evaluable from script |
 | `V3` | Error recovery without a screen | Failure and unknown states have an audible next step | Evaluable from script |
 | `V4` | No visual-only instruction | The voice flow does not depend on reading a page | Evaluable from script |
 
-No claim is made that the voice journey conforms to ISO 9241-154.
+No claim is made that the voice journey conforms to ISO 9241-154, and `V1`–`V4` are not attributed to that standard.
 
 ### 4.4 Accessibility references
 
@@ -152,6 +154,18 @@ These are **own adaptations**, not standards. They exist because the journey has
 | `X4` | Continuity across handover | The human receives the context without asking the guest to repeat it |
 | `X5` | Channel parity | The same request reaches the same state and policy answer in all channels |
 | `X6` | Unknown/reconciliation discipline | A timeout is not treated as success or failure; retry waits for reconciliation |
+
+### 4.6 Source status
+
+| Source | What was checked | Consequence for the protocol |
+|---|---|---|
+| Nielsen, ten heuristics; severity ratings | Public NN/g pages read | Criteria and severity scale use the published heuristics; adaptation is stated |
+| ISO 9241-110:2020 | Public ISO page: title, edition and scope; full text not consulted | Principle names and mapping are a project application, not clause-level conformance |
+| ISO 9241-154:2013 | Public ISO page: title, edition and scope; full text not consulted | `V1`–`V4` are project-proposed criteria; the standard is a scope reference only |
+| WCAG 2.2 | W3C Recommendation page read; no implementation tested | Accessibility criteria are future-facing references; no conformance claim |
+| WAI-ARIA 1.2 | W3C Recommendation page read; no interface exists | Informative for a future chat interface; not evaluable now |
+
+The ISO public pages are not a substitute for the paid standards. Where the full text was not consulted, the protocol does not attribute individual criteria to the standard.
 
 ## 5. Coverage matrix
 
@@ -320,13 +334,13 @@ The section also states that the guest must verify and then confirm on the secur
 | `hypothetical_consequence` | A guest may believe the reply already completed the cancellation, or may believe the earlier `CONFIRM` will carry forward and not complete the secure-page step; this could add a clarification cycle or cause abandonment. This is not measured. |
 | `severity` | 2 — minor: the safe state is explicit and the next step is present, but continuity of intent is not stated. |
 | `confidence_observation` | High — the absence of a sentence linking the earlier `CONFIRM` to the secure-page confirmation is directly verifiable in the cited section. |
-| `confidence_interpretation` | Medium — the guest reaction is a plausible inference; the text does not measure comprehension. |
+| `confidence_interpretation` | Low — the guest reaction depends on unknown user behaviour; the text does not measure comprehension. |
 | `recommendation` | Add one sentence after “No change has been made”: “Your CONFIRM has been received, but it is not consent; after verification you will review the charge and confirm on the secure page.” Do not promise that booking details will be retained. |
 | `future_validation` | A comprehension test with 5–8 participants, asking “What do you need to do next?” and “Has your booking changed?”; check whether the secure page retains booking details as a design question, without promising it to the guest. Independent reproduction is also required. Neither test is part of this protocol. |
 | `reproduction_status` | `pending` — no independent blind reproduction has been completed. |
 | `reproduction_note` | If a second evaluator reads the passage differently, record `not_reproduced` or `requires_review` with the divergence and rationale; do not delete the finding. |
 
-`X2` is context, not the primary criterion: the document already requires consent inside the verified session. The finding is about the clarity of the message and the next step, so `N1` is primary and `N9` is secondary. The recommendation does not claim that the secure page retains booking details; that is a design question to verify.
+`X2` is context, not the primary criterion: the document already requires consent inside the verified session. The finding is about the clarity of the message and the next step, so `N1` is primary and `N9` is secondary. The recommendation does not claim that the secure page retains booking details; that is a design question to verify. The observation confidence is high, but the interpretation confidence is low because the guest reaction is unknown; the severity remains a documentary priority, not a measured impact.
 
 ### 10.4 Traceability
 
@@ -341,7 +355,7 @@ The section also states that the guest must verify and then confirm on the secur
 
 ### 10.5 Pilot result
 
-The protocol produces a traceable finding: a reader can move from the exact passage to a criterion, an observation, a hypothetical consequence, a severity, two confidence judgements and a recommendation. The observation confidence is high because the absence is directly readable; the interpretation confidence is medium because the guest reaction is inferred. The pilot does **not** validate the guest experience or the frequency of the problem.
+The protocol produces a traceable finding: a reader can move from the exact passage to a criterion, an observation, a hypothetical consequence, a severity, two confidence judgements and a recommendation. The observation confidence is high because the absence is directly readable; the interpretation confidence is low because the guest reaction is unknown and unmeasured. The pilot does **not** validate the guest experience or the frequency of the problem.
 
 ### 10.6 Reproduction check
 
@@ -360,7 +374,7 @@ Expected result: the same observation — the reply is safe but does not state w
 - The baseline is documentation, not a running product. It cannot show what a guest actually sees, hears or understands.
 - No participants, telemetry, support tickets or production data are used.
 - No WCAG conformance is claimed. WCAG does not cover telephony or voice interfaces directly.
-- Voice-specific accessibility remains a declared gap; ISO 9241-154 informs the review but is not a clause-level conformance claim.
+- Voice-specific accessibility remains a declared gap; ISO 9241-154 is a scope reference only, and `V1`–`V4` are project-proposed criteria, not a clause-level conformance claim.
 - Severity is a proposed heuristic priority, not measured impact or probability.
 - Both confidence judgements describe documentary support, not statistical confidence.
 - An absent statement is not proof of an absent behaviour.
@@ -375,8 +389,8 @@ Accessed 12 November 2026.
 
 1. Jakob Nielsen, *10 Usability Heuristics for User Interface Design*, Nielsen Norman Group, 24 April 1994, last reviewed 30 January 2024. https://www.nngroup.com/articles/ten-usability-heuristics/
 2. Jakob Nielsen, *Severity Ratings for Usability Problems*, Nielsen Norman Group, 1 November 1994. https://www.nngroup.com/articles/how-to-rate-the-severity-of-usability-problems/
-3. ISO 9241-110:2020, *Ergonomics of human-system interaction — Part 110: Interaction principles*, Edition 2, 2020-05. https://www.iso.org/standard/75258.html
-4. ISO 9241-154:2013, *Ergonomics of human-system interaction — Part 154: Interactive voice response (IVR) applications*, Edition 1, 2013-02. https://www.iso.org/standard/52172.html
+3. ISO 9241-110:2020, *Ergonomics of human-system interaction — Part 110: Interaction principles*, Edition 2, 2020-05. https://www.iso.org/standard/75258.html — public title/scope page only; full text not consulted.
+4. ISO 9241-154:2013, *Ergonomics of human-system interaction — Part 154: Interactive voice response (IVR) applications*, Edition 1, 2013-02. https://www.iso.org/standard/52172.html — public title/scope page only; full text not consulted; `V1`–`V4` are project-proposed.
 5. W3C, *Web Content Accessibility Guidelines (WCAG) 2.2*, W3C Recommendation, 12 December 2024. https://www.w3.org/TR/WCAG22/
 6. W3C, *WAI-ARIA 1.2*, W3C Recommendation, 6 June 2023. https://www.w3.org/TR/wai-aria-1.2/
 7. Conversation-design Core, `docs/02-cancellation-journey.md`, baseline `afa3c60`.
