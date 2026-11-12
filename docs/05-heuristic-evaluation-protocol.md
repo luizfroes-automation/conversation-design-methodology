@@ -549,13 +549,11 @@ Accessed 12 November 2026.
 - **Decision:** methodological approval granted for the method as reviewed at `562b6444d0ce1cc670f69c3f1a3b01825c840fbe`.
 - **Scope:** this document as reviewed at that commit, with the limitations in section 11. It does not validate the pilot finding, the AI readings or guest behaviour.
 - **Not covered:** the full evaluation. It remains unauthorised and requires a separate decision.
-- **Record commit:** this commit adds only the approval record and the status change; it does not alter the method reviewed at `562b644`.
 - **Constraints:** no independent human review, participant testing or interface observation was performed.
-- **Merge:** manual; this record does not merge the PR.
 
 ### Approval gates
 
 - [x] Methodological approval of the method as reviewed at `562b644` (recorded above).
 - [ ] Full evaluation authorised separately.
 
-The full heuristic evaluation is not authorised until the second gate is cleared. The PR remains open for manual merge.
+The full heuristic evaluation is not authorised until the second gate is cleared.
