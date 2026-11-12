@@ -290,7 +290,7 @@ Observation confidence and interpretation confidence are not averaged. A directl
 3. **Discovery pass.** Read each channel and state; record observations without criteria or severity.
 4. **Classification pass.** Apply the primary criterion, split findings, assign type, severity and both confidence judgements.
 5. **Coverage check.** Mark every `N`/`NA` cell and add it to the limitations; do not convert it into a finding.
-6. **Blind operational reproduction.** One or more blind evaluators apply the protocol to the pilot excerpt before reading the conclusion. Each evaluator is identified as AI or human. The result is recorded as `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale. A human evaluator is not mandatory for this portfolio gate; the absence of one is a declared limitation.
+6. **Blind operational reproduction.** One or more blind evaluators apply the protocol to the pilot excerpt before reading the conclusion. Each evaluator is identified as AI or human, and the packet used is recorded. The result is recorded as `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale. A human evaluator is not mandatory for this portfolio gate; the absence of one is a declared limitation.
 7. **Consolidation.** Deduplicate, label hypotheses, and write the limitations; keep divergent readings as review information.
 8. **Methodological review.** The protocol, the recorded reproductions and the divergences are reviewed before the full evaluation begins.
 
@@ -302,7 +302,7 @@ The full evaluation may start only when:
 - the frameworks and adaptations are approved;
 - the coverage matrix is complete, including non-evaluable items;
 - the findings model and severity rules are approved;
-- a documented blind operational reproduction exists, with each evaluator identified as AI or human;
+- a documented blind operational reproduction exists, with each evaluator identified as AI or human and the packet used recorded;
 - the divergences are recorded and discussed;
 - the limitations include the absence of human independent review, participant testing and interface observation;
 - the new HEAD is approved methodologically.
@@ -340,8 +340,8 @@ The section also states that the guest must verify and then confirm on the secur
 | `confidence_interpretation` | Low — the guest reaction depends on unknown user behaviour; the text does not measure comprehension. |
 | `recommendation` | Add one sentence after “No change has been made”: “Your CONFIRM has been received, but it is not consent; after verification you will review the charge and confirm on the secure page.” Do not promise that booking details will be retained. |
 | `future_validation` | A comprehension test with 5–8 participants, asking “What do you need to do next?” and “Has your booking changed?”; check whether the secure page retains booking details as a design question, without promising it to the guest. Independent reproduction is also required. Neither test is part of this protocol. |
-| `reproduction_status` | `not_reproduced` — two AI operational reproductions did not reproduce this finding: one found no problem, the other found a different gap. No human independent review. |
-| `reproduction_note` | The two AI readings are recorded in sections 10.7 and 10.9. Divergences are preserved; they are not user validation. |
+| `reproduction_status` | `not_reproduced` — four AI operational readings did not reproduce this finding as framed: two found no problem and two found different gaps. No human independent review. |
+| `reproduction_note` | The four readings are recorded in sections 10.7, 10.9, 10.10 and 10.11. Divergences are preserved; they are not user validation. |
 
 `X2` is context, not the primary criterion: the document already requires consent inside the verified session. The finding is about the clarity of the message and the next step, so `N1` is primary and `N9` is secondary. The recommendation does not claim that the secure page retains booking details; that is a design question to verify. The observation confidence is high, but the interpretation confidence is low because the guest reaction is unknown; the severity remains a documentary priority, not a measured impact.
 
@@ -368,19 +368,19 @@ For a blind operational reproduction, the reviewer prepares a packet containing:
 
 - sections 1–9 of this protocol, including the blank finding model;
 - the baseline excerpt at `afa3c60`: only “Email — CONFIRM without a verified session”;
-- no part of section 10 (`10.1`–`10.10`), including the pilot, comparison, calibration and expected result.
+- no part of section 10 (`10.1`–`10.12`), including the pilot, comparison, calibration and expected result.
 
-The evaluator fills the finding model without consulting the existing conclusion. Each evaluator is identified as AI or human. The reviewer compares the observation, primary criterion, severity and recommendation and records `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale.
+The evaluator fills the finding model without consulting the existing conclusion. Each evaluator is identified as AI or human, and the packet used is recorded with the result. The reviewer compares the observation, primary criterion, severity and recommendation and records `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale.
 
-Expected comparison: the same observation — the reply is safe but does not state whether the earlier `CONFIRM` carries forward — and the same primary criterion, `N1` visibility. A different severity is acceptable if justified. A different observation is recorded as `not_reproduced` or `requires_review`, not deleted. Two AI blind reproductions are recorded in sections 10.7 and 10.9; neither reproduced the original finding. A human evaluator is desirable but is not a mandatory gate in this portfolio context; the absence is declared in the limitations.
+Expected comparison: the same observation — the reply is safe but does not state whether the earlier `CONFIRM` carries forward — and the same primary criterion, `N1` visibility. A different severity is acceptable if justified. A different observation is recorded as `not_reproduced` or `requires_review`, not deleted. Four AI blind readings are recorded in sections 10.7, 10.9, 10.10 and 10.11; none reproduced the original finding as framed. A human evaluator is desirable but is not a mandatory gate in this portfolio context; the absence is declared in the limitations.
 
-### 10.7 AI operational reproduction #1 — result
+### 10.7 AI operational reading A — result
 
-**Evaluator:** an AI session, with no access to any part of section 10, given only sections 1–9, the baseline excerpt and the blank finding model.
-**Status:** AI operational reproduction completed; this reading did not reproduce the original finding as framed; no human independent review was performed.
+**Evaluator:** an AI session in OpenCode (`ses_e2e3714dfffeRcuNrundC2K67G`), with no access to any part of section 10, given only sections 1–9, the baseline excerpt and the blank finding model. Packet: `p6_blind_packet.md`.
+**Status:** AI operational reading completed; this reading did not reproduce the original finding as framed; no human independent review was performed.
 **Comparison status:** `requires_review`.
 
-| Dimension | First pilot | AI reproduction | Reading |
+| Dimension | First pilot | Reading A | Reading |
 |---|---|---|---|
 | State | `verification_pending` | `Consent` (also touches `Execution`) | Divergence in state naming; both are adjacent to the same passage. |
 | Observation | The reply is safe, but does not state whether the earlier `CONFIRM` carries forward or must be repeated after verification | The reply names verification and review but not the subsequent confirmation; verifying is not itself a cancellation | Partial convergence: both locate the missing final confirmation in the guest-facing text; the first frames it as continuity of intent, the second as an omitted step. |
@@ -391,15 +391,15 @@ Expected comparison: the same observation — the reply is safe but does not sta
 | Recommendation | Clarify that final confirmation happens after verification; do not promise data retention | State that verification is not cancellation and that confirmation on the secure page is required; do not describe the page beyond the excerpt | Convergence in intent; divergence in wording and emphasis. |
 | Type | `observation` | `documentary_gap` | Divergence; needs calibration. |
 
-The AI reproduction also identified three adjacent candidates — a transfer alternative with no stated invocation route, “the charge” as a definite reference, and the tension between the no-change statement and the no-disclosure rule — and kept them separate rather than folding them into the finding.
+Reading A also identified three adjacent candidates — a transfer alternative with no stated invocation route, “the charge” as a definite reference, and the tension between the no-change statement and the no-disclosure rule — and kept them separate rather than folding them into the finding.
 
-**Decision:** the operational reproduction shows that the packet can produce a finding without the conclusion, but it does **not** confirm the first reading. It is one of two AI operational reproductions; it is not a human review and it is not user validation. The calibration decision is recorded in section 10.8; it preserves both readings and defines how the protocol applies to this case.
+**Decision:** the operational reading shows that the packet can produce a finding without the conclusion, but it does **not** confirm the first reading. It is one of four AI operational readings; it is not a human review and it is not user validation. The calibration decision is recorded in section 10.8; it preserves this reading and defines how the protocol applies to this case.
 
 ### 10.8 Calibration decision
 
 This decision applies the protocol to this case. It does not declare the AI reading wrong, and it does not rewrite either original evaluation.
 
-| Dimension | Original pilot | AI reproduction | Calibrated decision | Reason |
+| Dimension | Original pilot | Reading A | Calibrated decision | Reason |
 |---|---|---|---|---|
 | Type | `observation` | `documentary_gap` | `documentary_gap` | The guest-facing message omits the final confirmation step. The rule exists in the surrounding text, so the record must locate the gap in the message, not claim the rule is absent. |
 | Primary criterion | `N1` | `X1` | `N1` | The issue is visibility of the next step. `X1` is secondary: the message does not make a false claim about the state. |
@@ -411,30 +411,89 @@ This decision applies the protocol to this case. It does not declare the AI read
 
 The AI’s `X1`, `Consent`, `documentary_gap` and `medium` interpretation remain recorded as its original reading. The calibration is a case decision, not a retroactive correction of the evaluator.
 
+This calibration compares the original pilot with **reading A only**. Readings B, C and D were recorded afterwards and are preserved in sections 10.9–10.11; they do not change this decision.
+
 The three adjacent candidates — the transfer route, “the charge” reference and the no-change/no-disclosure tension — remain possibilities. They are not approved findings and do not expand the pilot into a full evaluation.
 
-**Calibration status:** `accepted_for_this_case`. Methodological approval remains pending; no human independent review was performed. The two AI reproductions did not validate the finding or the guest experience.
+**Calibration status:** `accepted_for_this_case`. Methodological approval remains pending; no human independent review was performed. The AI readings did not validate the finding or the guest experience.
 
-### 10.9 AI operational reproduction #2 — result
+### 10.9 AI operational reading B — OpenCode `NO FINDING`
 
-**Evaluator:** a second AI session, given the same blind packet and asked not to force a finding. It had no access to any part of section 10 and saw no prior conclusion.
+**Evaluator:** an AI session in OpenCode (`ses_e2e2221fcffe2VhIQd76Wfmcsd`), given the blind packet `p6_blind_packet_c866d61.md` and asked not to force a finding. It had no access to any part of section 10 and saw no prior conclusion.
 **Result:** `NO FINDING`.
 **Status for the original finding:** `not_reproduced`.
 
 The evaluator found the reply consistent with `X1`, `X2`, `N5`, `N1`/`I2`, `N9`/`I6`, `N3`/`I5` and `X3` as applied to the excerpt. It considered the transfer alternative as a possible weakness, but rejected it as a finding because “A reply to this email is not enough on its own” is scoped to consent, the secure link is a stated next step, and the transfer offer is unconditional. It recorded the transfer point as a divergence, not an approved finding.
 
-This is an **AI operational reproduction, not a human independent review**. It does not establish that the journey is safe; it establishes that this evaluator read the excerpt as consistent.
+This is an **AI operational reading, not a human independent review**. It is the only reading that explicitly considered and rejected the transfer-route gap; it is not the same artefact as the external `NO FINDING` reading in section 10.10.
 
-### 10.10 Consolidated reproduction position
+### 10.10 AI operational reading C — external `NO FINDING`
 
-| Evaluation | Evaluator | Result | Status |
-|---|---|---|---|
-| Original pilot | First evaluator | `N1` visibility; later calibrated to `documentary_gap` | Original, preserved |
-| AI reproduction #1 | AI | Different gap: `X1` primary, `documentary_gap`, severity 2 | `requires_review`; original not reproduced |
-| AI reproduction #2 | AI | No finding | `not_reproduced` |
-| Calibration | Reviewer decision | `documentary_gap`, `N1`, `verification_pending`, low interpretation confidence, severity 2 | `accepted_for_this_case` |
+**Provenance:** a separate AI evaluator, not found in the local OpenCode session store. The response was supplied verbatim by the reviewer as “Resposta 1”; the full packet and session log are not available, only the baseline excerpt and the result.
+**Result:** `NO FINDING`; the evaluator recorded `severity: 0 — Not a problem`.
+**Status for the original finding:** `not_reproduced`.
 
-The two most recent AI evaluations did **not** reproduce the original finding as framed: one found no problem, the other found a different but adjacent gap. The partial agreement on severity in AI reproduction #1 is not user validation and does not turn either reading into evidence about guest behaviour.
+The evaluator filled the model as an `observation` in state `Consent`, with `X2` as primary and `N5`, `N9`, `X3` as secondary. It stated that the `CONFIRM` is not bound to a verified session, that no change was made, that the secure link is the next step, and that transfer is available if the link cannot be used. It did **not** record considering or rejecting the transfer-route gap; it treated the transfer offer as declared.
+
+| Field | Reading C (translated summary of the submitted model) |
+|---|---|
+| `type` | `observation` |
+| `state` | `Consent` |
+| `criterion` | `X2` primary; `N5`, `N9`, `X3` secondary |
+| `observation` | The reply refuses the unverified `CONFIRM`, states that no change was made, names the secure link and the verification step, warns that a reply is not enough, and offers transfer if the link cannot be used. |
+| `hypothetical_consequence` | None identified; the transfer alternative is declared for failure of the link. |
+| `severity` | `0` — Not a problem |
+| `confidence_observation` | `high` |
+| `confidence_interpretation` | `high` |
+| `reproduction_status` | `pending` in the original submission |
+
+This is an **AI operational reading, not a human independent review**. Its `high` interpretation confidence is its own judgement; the protocol’s section 8.2 rule and the calibration in 10.8 retain `low` for the original finding. The calibration is not changed by this reading.
+
+### 10.11 AI operational reading D — external `documentary_gap` (`N9`)
+
+**Provenance:** a second external AI evaluator, also supplied verbatim by the reviewer as “Resposta 2”. It is distinct from reading C and from the OpenCode readings; the full packet and session log are not available.
+**Result:** `documentary_gap`; `severity: 2`.
+**Status for the original finding:** `not_reproduced`; this is a different gap.
+
+| Field | Reading D (translated summary of the submitted model) |
+|---|---|
+| `type` | `documentary_gap` |
+| `state` | `Consent` |
+| `criterion` | `N9` primary |
+| `observation` | The reply says a plain reply is not enough and offers human transfer, but does not state *how* the guest requests that transfer. |
+| `hypothetical_consequence` | A guest who cannot use the secure link may feel stuck or abandon the process, because the preceding sentence invalidates email replies and the transfer has no stated trigger. |
+| `severity` | 2 |
+| `confidence_observation` | `high` |
+| `confidence_interpretation` | `medium` |
+| `reproduction_status` | `pending` in the original submission |
+
+The evaluator also recorded that it found no problem with `X2` and `X1` before filling this gap. Its recommendation is to specify the fallback action — for example, a reply keyword such as `SUPPORT` — and to clarify that only the confirmation reply is blocked.
+
+This reading is close to the transfer-route candidate that reading A listed as an adjacent possibility and reading B considered and rejected. Recording it as a separate reading preserves the divergence; it does not make the transfer route an approved finding. The full evaluation may examine it; the pilot does not expand to cover it.
+
+This is an **AI operational reading, not a human independent review**.
+
+### 10.12 Consolidated reproduction position
+
+| Reading | Evaluator and provenance | Packet | Result | Status for the original finding |
+|---|---|---|---|---|
+| Original pilot | First evaluator, main session | not applicable | `N1` visibility; later calibrated to `documentary_gap` | Original, preserved |
+| A | OpenCode subagent `ses_e2e3714…` | `p6_blind_packet.md` | `X1` primary, `documentary_gap`, severity 2 | `not_reproduced`; `requires_review` |
+| B | OpenCode subagent `ses_e2e2221…` | `p6_blind_packet_c866d61.md` | `NO FINDING`; considered and rejected the transfer route | `not_reproduced` |
+| C | External AI, “Resposta 1” | baseline excerpt; packet not recorded | `NO FINDING`, severity 0, `X2` | `not_reproduced` |
+| D | External AI, “Resposta 2” | baseline excerpt; packet not recorded | `N9` primary, `documentary_gap`, severity 2 | `not_reproduced`; divergent finding |
+| Calibration | Reviewer decision | not applicable | `documentary_gap`, `N1`, `verification_pending`, low interpretation confidence, severity 2 | `accepted_for_this_case` |
+
+**Count reconciliation.** The reviewer’s account of three readings corresponds to A, C and D. Reading B is a fourth, distinct artefact: it is an OpenCode session using the revised packet, and its text differs from C. It is preserved separately rather than merged with C, because merging would delete the only reading that explicitly considered and rejected the transfer route.
+
+**What the readings show.**
+
+- None of the four AI readings reproduced the original finding as framed: that the reply does not state whether the earlier `CONFIRM` carries forward.
+- B and C found **no problem** in the excerpt.
+- A and D found **different gaps** (`X1` and `N9` respectively).
+- “The original finding was not reproduced” is therefore broader than “no finding was found”: two readings found no problem, and two found a different problem.
+
+These AI readings are operational reproductions of the protocol, not user validation and not human independent review. Partial agreement on severity (A, D and the original all propose 2) is not agreement on cause or on the strength of the evidence.
 
 The transfer-route candidate remains separate, as a possibility to examine in the full evaluation. It is not an approved finding, it does not expand the pilot, and it is not counted as a reproduction failure.
 
@@ -451,8 +510,9 @@ No human independent review, participant testing or interface observation was pe
 - An absent statement is not proof of an absent behaviour.
 - A `not evaluable` item is a coverage gap, not a violation.
 - The pilot is a method test, not an evaluation of user experience.
-- No human independent review, participant testing or interface observation was performed. The two AI reproductions are operational readings, not user validation; the full evaluation must repeat this limitation.
-- The two AI evaluations diverged; agreement on severity is not agreement on cause or on the strength of the evidence.
+- No human independent review, participant testing or interface observation was performed. The four AI readings are operational readings, not user validation; the full evaluation must repeat this limitation.
+- The four AI readings diverged: two found no problem and two found different gaps; agreement on severity is not agreement on cause or on the strength of the evidence.
+- Readings C and D were supplied verbatim by the reviewer; their packet and session logs are unavailable, so their provenance is weaker than the recorded OpenCode sessions A and B.
 - The baseline may change after this protocol is approved; a new commit requires a new baseline record.
 
 ## 12. References
@@ -476,8 +536,9 @@ Accessed 12 November 2026.
 - [x] Nielsen, ISO and WCAG references identified; the ISO full texts were not consulted and that limit is declared.
 - [x] Coverage matrix drafted with documentary/runtime and `N`/`NA` distinctions.
 - [x] Findings model, severity scale and both confidence scales defined.
-- [x] Two AI operational reproductions recorded and identified as AI.
-- [x] Divergences and the calibration decision recorded without deleting either reading.
+- [x] Four AI operational readings recorded and identified as AI, with provenance: two OpenCode sessions (A, B) and two external responses (C, D).
+- [x] Divergences and the calibration decision recorded without deleting any reading.
+- [x] The distinction between “the original finding was not reproduced” and “no finding was found” stated explicitly.
 - [x] Limitations declared, including the absence of human independent review, participant testing and interface observation.
 
 ### Approval gates
