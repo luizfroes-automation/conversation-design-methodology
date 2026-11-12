@@ -34,9 +34,9 @@ All names, references, dates, prices, policies and dialogues are synthetic. No e
 
 | Channel | What the customer can do | What the automation can confirm | Main constraint |
 |---|---|---|---|
-| Chat | Send messages in the app or web chat | Booking found, identity verified, cancellation executed, confirmation sent | The customer can paste a reference and complete a one-time code without leaving the conversation |
-| Voice | Speak to an automated voice agent, with barge-in and transfer | Booking found, identity verified, cancellation executed, confirmation sent | Identity often needs a secure link or a code read back; the caller may not have the booking reference |
-| Email | Reply to an automated email thread | Booking found, identity verified, cancellation executed, confirmation sent | Asynchronous; email alone is not identity; the thread is the record until a case is transferred |
+| Chat | Send messages in the app or web chat | Booking found, identity verified, cancellation confirmed; notification tracked separately | The customer can paste a reference and complete a one-time code without leaving the conversation |
+| Voice | Speak to an automated voice agent, with barge-in and transfer | Booking found, identity verified, cancellation confirmed; notification tracked separately | Identity often needs a secure link or a code read back; the caller may not have the booking reference |
+| Email | Reply to an automated email thread | Booking found, identity verified, cancellation confirmed; notification tracked separately | Asynchronous; email alone is not identity; the thread is the record until a case is transferred |
 
 The channel changes the mechanics, not the policy. A request is handled in the same order everywhere: locate the booking, verify identity, resolve the policy, execute only if allowed, then confirm from the booking system.
 
@@ -56,12 +56,15 @@ The channel changes the mechanics, not the policy. A request is handled in the s
 
 ## Design principles
 
-1. **A request is not a confirmation.** “I want to cancel” starts a request. A cancellation exists only when the booking system returns a cancellation confirmation and the guest receives it.
+1. **A request is not a confirmation.** “I want to cancel” starts a request. A cancellation exists when the booking system returns a cancellation confirmation and reference; notifying the guest is a separate step.
 2. **Confirm only what the system confirms.** The automation may say “I have found your booking” only after a match, and “your booking is cancelled” only after the cancellation response.
 3. **Verify before disclosing.** No property, date, price or policy detail is revealed before identity is verified.
 4. **Do not interpret an ambiguous policy.** If the rate, promotion and policy disagree, the automation states what it can see and transfers; it does not choose the friendlier rule.
 5. **Transfer with context.** The human receives the original conversation, the booking reference, the verification state, the policy evidence and the actions already taken. The customer is not asked to repeat them.
 6. **Channel parity.** Chat, voice and email use the same identity, policy and confirmation rules; only the interaction mechanics differ.
+7. **Unknown is a state.** A timeout or transport failure is neither success nor failure; reconcile with the booking system before any retry or customer claim.
+8. **Notification is not the cancellation.** If the system confirms but the message fails, the booking remains cancelled and the delivery failure is handled separately.
+9. **Redact verification material.** One-time codes, secure links and tokens never enter the P1 transcript; only the verification result does.
 
 ## Out of scope
 

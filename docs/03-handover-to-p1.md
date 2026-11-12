@@ -61,7 +61,7 @@ The guest has verified identity, the booking displays “Flexible”, the rate c
     },
     {
       "role": "customer",
-      "content": "Code 418205."
+      "content": "My verification code is [verification code redacted]."
     },
     {
       "role": "bot",
@@ -78,6 +78,8 @@ The guest has verified identity, the booking displays “Flexible”, the rate c
   ]
 }
 ```
+
+Before the transcript leaves the channel, verification codes, secure-link URLs, one-time tokens and any contact detail not needed for the assessment are replaced. P1 receives the **result** — “identity verified” — not the credential or the link. The channel keeps the verification evidence and the original conversation.
 
 ### Package returned by P1
 
@@ -119,7 +121,8 @@ The P1 package is one part of the handover. The channel orchestration sends a ca
 | Identity status and method | Identity service | Whether the guest is verified, and how |
 | Policy evidence | Booking system | Displayed rate, rate code, promotion note |
 | Actions already taken | Channel orchestration | What the automation attempted, including failed calls |
-| Cancellation status | Booking system | `not_requested`, `unknown`, `failed` or `confirmed` with reference |
+| Cancellation status | Booking system | `not_requested`, `unknown`, `failed` or `confirmed` with reference; `unknown` is reconciled before any retry |
+| Notification status | Channel | `pending`, `sent` or `failed`; a failed notification does not undo a confirmed cancellation |
 | P1 `HandoverPackage` | P1 | The structured assessment |
 | Customer-facing messages sent | Channel | What the guest has already been told |
 
@@ -135,15 +138,18 @@ The human should not ask the guest to repeat the booking reference, dates, conta
 
 P1 does not store the conversation. The channel keeps the original and gives the human a link or case reference. If P1 returns a package, it is attached to the channel case; it does not replace the original record.
 
-## Who executes the transfer
+## Transfer precedence
 
-1. The **channel automation** reaches a transfer condition or the guest asks for a human.
-2. The **channel orchestration** calls P1 with the transcript and waits for a package.
-3. The channel uses `handoff_needed`, `suggested_team`, `urgency` and the case context to select a queue; the routing layer performs the actual transfer.
-4. The **human agent** receives the case, the original conversation and the package.
-5. P1 does not queue, transfer, store or cancel anything.
+The journey’s transfer decision has precedence over P1:
 
-If the guest asks for a human before the automation has a package, the transfer should not wait indefinitely for P1. The channel can transfer with its own context and attach the P1 package when it arrives, provided the case record makes the package’s arrival state visible.
+1. The **channel automation** reaches a transfer condition or the guest asks for a human. That decision is final for the channel.
+2. The transfer proceeds even if P1 is unavailable or returns `handoff_needed: false`. P1 enriches the case; it does not veto a transfer the journey requires.
+3. If a package is wanted, the **channel orchestration** calls P1 with the transcript. The transfer does not wait indefinitely for the package.
+4. The channel uses the package, when present, plus the case context to select a queue and priority. `suggested_team` and `urgency` are advice; the routing layer performs the actual transfer.
+5. The **human agent** receives the case, the original conversation and the package, if it arrived.
+6. P1 does not queue, transfer, store or cancel anything.
+
+A guest who asks for a human is transferred even if P1 returns `handoff_needed: false`. If that happens, the package is attached with a note that the journey required the transfer; the package is not used to overrule the guest. Conversely, a `handoff_needed: true` package does not cancel a booking or replace the booking-system state.
 
 ## When P1 is unavailable
 
@@ -152,14 +158,35 @@ The cancellation decision does not depend on P1 being available. The channel mus
 | P1 outcome | What the channel does |
 |---|---|
 | `200` with `HandoverPackage` | Attach the package and route using the case context |
+| `200` with `handoff_needed: false` | Do **not** use it to cancel a journey-required transfer; attach it as advice if the case is transferred |
 | `503 provider_unavailable` | No package; transfer with channel context or defer; do not claim cancellation |
 | `503 provider_rate_limited` | No package; the body’s `fallback` is not a `HandoverPackage`; route for human review; do not claim cancellation |
 | `502 invalid_llm_response` | No package; transfer or defer; do not claim cancellation |
-| `502 content_blocked` | No package; transfer or defer; do not claim cancellation |
+| `502 content_blocked` | No package; the body’s `fallback` is a triage signal, not a `HandoverPackage`; route for human review; do not claim cancellation |
 | `500 proxy_error` / `llm_configuration_error` | No package; transfer or defer; do not claim cancellation |
 | `422` input rejection | Fix the transcript or escalate the channel defect; do not treat the request as a cancellation |
 
-The fallback body for `provider_rate_limited` carries `{"assessment": "unavailable", "error": "provider_rate_limited", "urgency": "high"}`. It is a triage object, not a model assessment; the channel must not present it as one.
+Both the `provider_rate_limited` and `content_blocked` branches carry a `fallback` object. For `provider_rate_limited`:
+
+```json
+{
+  "assessment": "unavailable",
+  "error": "provider_rate_limited",
+  "urgency": "high"
+}
+```
+
+For `content_blocked`:
+
+```json
+{
+  "assessment": "unavailable",
+  "error": "content_blocked",
+  "urgency": "high"
+}
+```
+
+These are triage signals for a human review; they are not a `HandoverPackage` and must not be read as a model assessment. The `invalid_llm_response` branch does not carry a fallback.
 
 ## Setting the boundary for review
 

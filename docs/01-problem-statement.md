@@ -15,12 +15,13 @@ The design problem is therefore not only “how do we cancel a booking?”. It i
 
 ## Desired outcome
 
-For the synthetic scenario, a guest should be able to make one cancellation request in any of the three channels and receive one of four honest outcomes:
+For the synthetic scenario, a guest should be able to make one cancellation request in any of the three channels and receive one of five honest outcomes:
 
-1. **Cancelled and confirmed** — identity was verified, the policy allowed cancellation, the booking system executed it, and the guest received a confirmation with a cancellation reference.
+1. **Cancelled and confirmed** — identity was verified, the policy allowed cancellation, and the booking system returned a cancellation reference. Guest notification is a separate step: if it fails, the cancellation remains confirmed and the failure is handled as a notification incident.
 2. **Clarification needed** — the automation needs one more piece of information, such as a booking reference, a secure-link confirmation or the guest’s explicit confirmation of the cancellation.
 3. **Transferred with context** — the case goes to a human because the booking cannot be located, identity cannot be verified, the policy is ambiguous or the booking system is unavailable. The human receives the original conversation and the actions already taken.
 4. **No change made** — the request could not be completed, and the guest is told clearly that no cancellation has been confirmed.
+5. **Unknown, pending reconciliation** — the cancellation call returned no definitive result. The booking may or may not have changed. The guest is told the state is unknown, and no retry is offered until the booking system has been reconciled.
 
 The guest should never have to infer which of these outcomes happened.
 
@@ -60,7 +61,8 @@ The guest requests cancellation on **2 March 2027**, which is 12 days before che
 
 - The booking system exposes a read operation for the booking and a cancellation operation that returns an explicit result.
 - The identity service can send a one-time code to the email address or phone number already on the booking.
-- A successful cancellation returns a cancellation reference and changes the booking status; a failed or timed-out call does not.
+- A cancellation call can return success, a definite failure or no result. A timeout or transport failure is **unknown**: it proves neither that the booking is intact nor that it was cancelled. The state stays `unknown` until it is reconciled with the booking system; only after reconciliation may the channel retry or tell the guest what happened.
+- A successful cancellation is established by the booking system’s response and cancellation reference. Notifying the guest is a separate step; a notification failure does not undo the cancellation.
 - The channel keeps the original conversation. P1 may receive a transcript snapshot, but it does not become the system of record.
 - A human agent can correct the suggested team; P1’s `suggested_team` is advice, not an irreversible routing decision.
 - The guest may ask for a human at any point; that request is honoured without requiring the automation to finish its script.
