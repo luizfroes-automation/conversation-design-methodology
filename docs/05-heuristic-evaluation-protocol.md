@@ -1,6 +1,7 @@
 # Documentary Heuristic Evaluation Protocol
 
-**Status:** Draft for methodological review. The full evaluation has not started.
+**Status:** Methodologically approved for the method as reviewed at `562b6444d0ce1cc670f69c3f1a3b01825c840fbe`, with the limitations in section 11.
+**Approval scope:** the method only. It does not validate the pilot findings and does not authorise the full evaluation. No full evaluation has started.
 **Baseline:** `conversation-design-methodology` at `afa3c601060185b2f8a758e042a1b8efa55c496d` (squash of PR #1).
 **Reference contract:** `handover-intelligence-portfolio` at `cf738f258efd96b3a5c825310da4561dc1c79e39`.
 **Scope:** define and pilot the method only. This document does not evaluate the whole journey and does not test users.
@@ -543,9 +544,18 @@ Accessed 12 November 2026.
 - [x] The distinction between “the original finding was not reproduced” and “no finding was found” stated explicitly.
 - [x] Limitations declared, including the absence of human independent review, participant testing and interface observation.
 
+### Approval record
+
+- **Decision:** methodological approval granted for the method as reviewed at `562b6444d0ce1cc670f69c3f1a3b01825c840fbe`.
+- **Scope:** this document as reviewed at that commit, with the limitations in section 11. It does not validate the pilot finding, the AI readings or guest behaviour.
+- **Not covered:** the full evaluation. It remains unauthorised and requires a separate decision.
+- **Record commit:** this commit adds only the approval record and the status change; it does not alter the method reviewed at `562b644`.
+- **Constraints:** no independent human review, participant testing or interface observation was performed.
+- **Merge:** manual; this record does not merge the PR.
+
 ### Approval gates
 
-- [ ] Methodological approval of the new HEAD.
+- [x] Methodological approval of the method as reviewed at `562b644` (recorded above).
 - [ ] Full evaluation authorised separately.
 
-Until the approval gates are cleared, no full heuristic evaluation is started.
+The full heuristic evaluation is not authorised until the second gate is cleared. The PR remains open for manual merge.
