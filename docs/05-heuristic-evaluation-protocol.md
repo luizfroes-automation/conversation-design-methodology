@@ -237,6 +237,7 @@ The documentary layer can still be evaluated, but it describes intent. The runti
 - Do not merge a safe-state observation with a separate notification issue.
 - Do not use “users will”; use “a guest may”.
 - A `documentary_gap` names what is missing and why it matters; it does not claim the implementation lacks it.
+- When the missing element is in a **message** but the rule exists in the surrounding design, cite both passages and state the location of the absence. Record a communication gap in the message, not a missing rule in the design. Do not write “the design has no consent step” when the rule is present but the guest-facing message omits it.
 - A `hypothesis` is allowed when the consequence depends on an absent interface, but `confidence_interpretation` cannot exceed `low`.
 - A finding that is not reproduced by a second evaluator is **kept** with `reproduction_status` set to `not_reproduced` or `requires_review`, the divergence and the rationale. Do not delete evidence because two evaluators read the passage differently.
 
@@ -391,6 +392,26 @@ Expected result: the same observation — the reply is safe but does not state w
 The AI reproduction also identified three adjacent candidates — a transfer alternative with no stated invocation route, “the charge” as a definite reference, and the tension between the no-change statement and the no-disclosure rule — and kept them separate rather than folding them into the finding.
 
 **Decision:** the operational reproduction shows that the packet can produce a finding without the conclusion, but it does **not** satisfy the human-independent review gate and it does **not** confirm the first reading. The divergences are preserved. The follow-up calibration must decide whether the primary criterion is `N1` or `X1`, whether the type is `observation` or `documentary_gap`, how section 8.2 applies to interpretation confidence, and whether the recommendation should emphasise continuity of intent or the verification/confirmation distinction.
+
+### 10.8 Calibration decision
+
+This decision applies the protocol to this case. It does not declare the AI reading wrong, and it does not rewrite either original evaluation.
+
+| Dimension | Original pilot | AI reproduction | Calibrated decision | Reason |
+|---|---|---|---|---|
+| Type | `observation` | `documentary_gap` | `documentary_gap` | The guest-facing message omits the final confirmation step. The rule exists in the surrounding text, so the record must locate the gap in the message, not claim the rule is absent. |
+| Primary criterion | `N1` | `X1` | `N1` | The issue is visibility of the next step. `X1` is secondary: the message does not make a false claim about the state. |
+| State | `verification_pending` | `Consent` (touches `Execution`) | `verification_pending`, with `consent` related | The message arrives before verification; the later confirmation belongs to the consent stage. |
+| `confidence_observation` | High | High | High | The absence of the instruction in the cited reply is directly verifiable. |
+| `confidence_interpretation` | Low | Medium | Low | The guest reaction is unknown; section 8.2 assigns `low` to that kind of consequence. |
+| Severity | 2 | 2 | 2, provisional | Both evaluations proposed it; it is a documentary priority, not measured impact. |
+| Recommendation | Clarify that final confirmation happens after verification | State that verification is not cancellation and confirmation is required | After verifying identity and reviewing the charge, the guest must confirm on the secure page; the email `CONFIRM` alone remains insufficient | Clarifies the next step without turning the email reply into consent, and without promising data retention. |
+
+The AI’s `X1`, `Consent`, `documentary_gap` and `medium` interpretation remain recorded as its original reading. The calibration is a case decision, not a retroactive correction of the evaluator.
+
+The three adjacent candidates — the transfer route, “the charge” reference and the no-change/no-disclosure tension — remain possibilities. They are not approved findings and do not expand the pilot into a full evaluation.
+
+**Calibration status:** `accepted_for_this_case`. Human-independent reproduction and methodological approval remain pending.
 
 ## 11. Limitations
 
