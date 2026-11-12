@@ -1,13 +1,15 @@
 # Conversation Design & Multi-Channel Methodology
 
-**Status:** Core draft for review.
-**Scope of this delivery:** conversation design artefacts only. No implementation, integration, production data or formal heuristic evaluation.
+**Status:** The multi-channel Core and the documentary evaluation protocol are complete. The full heuristic evaluation has not been performed; there has been no independent human review of the evaluation, participant testing or interface observation.
+**Scope of this delivery:** conversation design and evaluation-method artefacts only. No implementation, integration, production data or full heuristic evaluation. The pilot and AI readings are methodological evidence, not evidence of guest behaviour.
 
 ## Purpose
 
 This project defines how one customer request can be handled coherently across **chat, voice and email**, without the customer having to repeat information and without the automation claiming more than the systems can confirm.
 
 The Core uses a single synthetic scenario: a guest wants to cancel a booking. The same request is designed three times, once per channel, against shared rules for identity, policy, confirmation and handover.
+
+The repository contains the design and the evaluation method; it does not contain a running chat, voice, email or booking system.
 
 ## Scenario
 
@@ -40,12 +42,13 @@ All names, references, dates, prices, policies and dialogues are synthetic. No e
 
 The channel changes the mechanics, not the policy. A request is handled in the same order everywhere: locate the booking, verify identity, resolve the policy, execute only if allowed, then confirm from the booking system.
 
-## Core artefacts
+## Artefacts
 
 - [01 — Problem statement](docs/01-problem-statement.md)
 - [02 — Cancellation journey](docs/02-cancellation-journey.md)
 - [03 — Handover to P1](docs/03-handover-to-p1.md)
 - [04 — Success criteria](docs/04-success-criteria.md)
+- [05 — Heuristic evaluation protocol](docs/05-heuristic-evaluation-protocol.md) — method and pilot; the full evaluation has not been performed.
 
 ## Reading order
 
@@ -53,6 +56,11 @@ The channel changes the mechanics, not the policy. A request is handled in the s
 2. Read the cancellation journey for the shared state model, channel flows and decision rules.
 3. Read the P1 handover to see what the human receives and which parts belong to the channel, not to P1.
 4. Read the success criteria for observable tests and proposed metrics.
+5. Read the heuristic evaluation protocol for the method and pilot. The protocol is methodologically approved, but the full evaluation has not been performed; the pilot and AI readings are not evidence of guest behaviour.
+
+## Relationship to P1
+
+The handover boundary is defined against the public [handover-intelligence-portfolio](https://github.com/luizfroes-automation/handover-intelligence-portfolio) project at `cf738f2`. P1 receives a transcript and returns a validated `HandoverPackage`; it does not cancel, queue, transfer or store the conversation. This repository contains the journey design and the channel-side context; P1 is a separate public project. See [03 — Handover to P1](docs/03-handover-to-p1.md).
 
 ## Design principles
 
@@ -69,11 +77,19 @@ The channel changes the mechanics, not the policy. A request is handled in the s
 
 ## Out of scope
 
-- Formal heuristic evaluation; this is an Enhancement after the journey is reviewed.
+- The full heuristic evaluation; the protocol and pilot are in `05`, but the evaluation has not been performed. The pilot and AI readings do not demonstrate guest behaviour.
 - Chatbot, IVR, email or booking-system implementation.
 - Real customer data, real policies, real integrations or employer systems.
 - Pricing, refunds, complaints or chargeback handling beyond the cancellation journey.
 - Measuring the proposed metrics; the Core defines them, it does not claim results.
+
+## Limitations
+
+- This is a documentary design for a synthetic scenario, not an implemented chat, voice, email or booking system.
+- No real integrations, production data, telemetry or measured metrics are included. The metrics in `04` are proposals.
+- The full heuristic evaluation has not been performed. There has been no independent human review of the evaluation, participant testing or interface observation.
+- The pilot and the four AI readings in `05` are methodological evidence; they do not demonstrate guest behaviour, comprehension or satisfaction.
+- The P1 contract is documented against the public project at `cf738f2`; this repository does not implement P1.
 
 ## Synthetic data and safety
 

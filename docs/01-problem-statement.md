@@ -73,7 +73,9 @@ The guest requests cancellation on **2 March 2027**, which is 12 days before che
 - Replacing the booking system, payment provider, identity provider or contact-centre platform.
 - Handling complaints, chargebacks, fraud investigations or vulnerable-customer escalation beyond a safe transfer.
 - Measuring real conversion, cost or satisfaction.
-- Producing a formal heuristic evaluation; that belongs to the Enhancement.
+- Producing the full heuristic evaluation; the protocol and pilot are in `05`, but the evaluation has not been performed.
+
+The protocol in `05` defines the method. The full evaluation has not been performed, and no independent human review of the evaluation, participant testing or interface observation has been conducted.
 
 ## Open questions for review
 
