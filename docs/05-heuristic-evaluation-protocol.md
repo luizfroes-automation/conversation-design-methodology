@@ -268,16 +268,16 @@ Confidence describes the strength of the documentary support, not a statistical 
 
 | Level | Definition | Example |
 |---|---|---|
-| High | The cited passage directly supports what is recorded as present or absent; no inference beyond reading | The section contains no sentence linking the earlier `CONFIRM` to the secure-page confirmation |
-| Medium | The observation requires combining two passages or resolving a wording ambiguity | Two sections describe the same state with different labels |
+| High | The cited passage directly supports what is recorded as present or absent; no inference beyond reading | A checkout page says “Payment received” before the payment provider’s success response |
+| Medium | The observation requires combining two passages or resolving a wording ambiguity | Two help pages describe the same account state with different labels |
 | Low | The passage is incomplete, internally contradictory or depends on an absent implementation | A claim about what the guest sees before the page renders |
 
 ### 8.2 Confidence in the interpretation
 
 | Level | Definition | Example |
 |---|---|---|
-| High | The inference is tightly constrained by the passage and alternatives are implausible | A false confirmation appears while the state is still `request_received` |
-| Medium | One plausible alternative reading or user reaction remains | A message gives a next step but does not acknowledge the guest’s earlier intent |
+| High | The inference is tightly constrained by the passage and alternatives are implausible | A checkout page says “Order placed” before the order service confirms success |
+| Medium | One plausible alternative reading or user reaction remains | A help article says a setting is optional but does not say what happens when it is omitted |
 | Low | The consequence depends on absent implementation, unknown user behaviour or an unstated system response | A claim about what a screen-reader user would hear |
 
 Observation confidence and interpretation confidence are not averaged. A directly observed sentence can have high observation confidence while the claimed guest consequence remains low or medium.
@@ -357,13 +357,15 @@ The section also states that the guest must verify and then confirm on the secur
 
 The protocol produces a traceable finding: a reader can move from the exact passage to a criterion, an observation, a hypothetical consequence, a severity, two confidence judgements and a recommendation. The observation confidence is high because the absence is directly readable; the interpretation confidence is low because the guest reaction is unknown and unmeasured. The pilot does **not** validate the guest experience or the frequency of the problem.
 
-### 10.6 Blind reproduction packet
+### 10.6 Blind reproduction packet — reviewer-only
+
+> **Reviewer-only section. Do not include this section in the evaluator’s packet.** It states the expected result.
 
 For an independent reproduction, the reviewer prepares a packet containing:
 
 - sections 1–9 of this protocol, including the blank finding model;
 - the baseline excerpt at `afa3c60`: only “Email — CONFIRM without a verified session”;
-- no section 10.3, 10.4 or 10.5, and no summary of the expected finding.
+- no section 10.3, 10.4, 10.5 or 10.6, and no summary of the expected finding.
 
 The evaluator fills the finding model without consulting the existing conclusion. The reviewer then compares the observation, primary criterion, severity and recommendation and records `confirmed`, `not_reproduced` or `requires_review`, with any divergence and rationale.
 
