@@ -1,5 +1,7 @@
 # 03 — Handover to P1
 
+**Reference:** [handover-intelligence-portfolio](https://github.com/luizfroes-automation/handover-intelligence-portfolio) — the public README and `app/schema.py` at `cf738f2` were used for this contract.
+
 ## What P1 does, and what it does not do
 
 The P1 service (`handover-intelligence-portfolio`) receives a transcript and returns a validated `HandoverPackage`. It does **not** execute a cancellation, queue a case, route a conversation, store the transcript or own the customer record. The P1 README is explicit that the caller chooses the review queue, keeps the conversation and deduplicates with its own identifier.
