@@ -1,4 +1,4 @@
-# Conversation Design & Multi-Channel Methodology (P6)
+# Conversation Design & Multi-Channel Methodology
 
 **Status:** Core draft for review.
 **Scope of this delivery:** conversation design artefacts only. No implementation, integration, production data or formal heuristic evaluation.
